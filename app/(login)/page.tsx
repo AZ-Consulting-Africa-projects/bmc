@@ -23,8 +23,10 @@ export default function Home() {
       phone: Yup.string().required("Le numéro de téléphone est obligatoire"),
       password: Yup.string().required("Le mot de passe est obligatoire")
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       setLoadint(true);
+      const loginModel = new LoginModel(Number(values.phone), values.password);
+     
       setErrorMsg("");
       console.log(values);
       toast({

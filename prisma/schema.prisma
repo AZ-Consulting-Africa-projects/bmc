@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL2")
+  provider = "postgres"
+  url      = env("POSTGRES_URL")
 }
 
 model User {
@@ -23,7 +23,7 @@ model User {
   departement String
   position String
   hire_date String
-  salary String
+  salary Decimal
   role RoleType
   isVisible Boolean @default(true)
   isActived Boolean @default(true)

@@ -7,12 +7,18 @@ import { useState } from "react";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { LoginModel } from "@/models/LoginModel";
+import { Api } from "../api/Api";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { logIn } from "@/redux/features/auth-slice";
 
 export default function Home() {
   const [loading, setLoadint] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
   const { toast } = useToast();
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -24,16 +30,35 @@ export default function Home() {
       password: Yup.string().required("Le mot de passe est obligatoire")
     }),
     onSubmit: async (values) => {
+      console.log(values);
       setLoadint(true);
       const loginModel = new LoginModel(Number(values.phone), values.password);
-     
-      setErrorMsg("");
-      console.log(values);
-      toast({
-        title: "Vous ete maintenant connecter"
-      })
+      console.log(loginModel);
+     /* const resp = await Api.create("/api/login", loginModel);
+      if(resp.ok) {
+        dispatch(logIn({uid:resp.id, role: resp.role}));
+
+        toast({
+          title: "Vous ete maintenant connecter"
+        })
+
+        router.push("/dashboard");
+        setLoadint(false);
+        formik.initialValues = {
+          phone: "",
+          password: ""
+        }
+      }else {
+        setErrorMsg("Le numéro de téléphone ou le mot de passe est incorrect");
+        setLoadint(false);
+        formik.initialValues = {
+          phone: "",
+          password: ""
+        }
+      }*/
       router.push("/dashboard");
       setLoadint(false);
+     
     }
   })
 

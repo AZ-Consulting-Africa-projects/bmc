@@ -12,7 +12,9 @@
  "redwan-hossain.auto-rename-tag-clone"
  "steoates.autoimport"
  "Prisma.prisma"
- "Prisma.prisma-insider"];
+ "Prisma.prisma-insider"
+ "rangav.vscode-thunder-client"
+ "zardoy.js-debug-extras"];
   idx.previews = {
     previews = {
       web = {

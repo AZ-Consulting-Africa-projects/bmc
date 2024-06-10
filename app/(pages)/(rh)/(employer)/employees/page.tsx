@@ -1,0 +1,183 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Search, FolderDown, UserPlus, Trash2 } from "lucide-react";
+import { Space, Table, Tag } from 'antd';
+import type { TableProps } from 'antd';
+import { useRouter } from "next/navigation";
+import Swal from 'sweetalert2'
+
+
+interface DataType {
+  key: string;
+  name: string;
+  poste: string;
+  phone: number;
+  address: string;
+  role: string;
+}
+
+
+export default function Employees() {
+  const router = useRouter();
+
+
+  const columns: TableProps<DataType>['columns'] = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Poste',
+      dataIndex: 'poste',
+      key: 'poste',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Téléphone',
+      dataIndex: 'phone',
+      key: 'phone',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Rôle',
+      key: 'role',
+      dataIndex: 'role',
+      render: (_, { role }) => (
+        <div>
+          {
+            role == "ADMIN" ?
+              <Tag color={"red"} key={role}>
+                {role.toUpperCase()}
+              </Tag> : <Tag color={"blue"} key={role}>
+                {role.toUpperCase()}
+              </Tag>
+
+          }
+        </div>
+      ),
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+          <Button onClick={() => {
+            router.push(`/edit_employees/${record.key}`)
+          }} size={"sm"} variant="outline">Editer</Button>
+
+          <Button size={"sm"} variant="destructive" onClick={() => {
+            Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                Swal.fire({
+                  title: "Deleted!",
+                  text: "Your file has been deleted.",
+                  icon: "success"
+                });
+              }
+            });
+          }}>
+            <Trash2 />
+          </Button>
+        </Space>
+      ),
+    },
+  ];
+
+  const data: DataType[] = [
+    {
+      key: '1',
+      name: 'John Brown',
+      poste: 'DG',
+      phone: 32,
+      address: 'New York No. 1 Lake Park',
+      role: "ADMIN",
+    },
+    {
+      key: '2',
+      name: 'Jim Green',
+      poste: 'RH',
+      phone: 42,
+      address: 'London No. 1 Lake Park',
+      role: "EMPLOYEE",
+    },
+    {
+      key: '3',
+      name: 'Joe Black',
+      poste: 'DIRECTEUR BI',
+      phone: 32,
+      address: 'Sydney No. 1 Lake Park',
+      role: "ADMIN",
+    },
+  ];
+
+  return (
+    <div className="flex flex-col gap-5">
+      {/** head */}
+      <div className="flex justify-between content-between w-full items-center">
+        <div>
+          <h1 className="md:text-3xl text-xl font-bold">Liste des employés (0)</h1>
+          <p className="text-gray-600 text-[13px] ">Employees mangement</p>
+        </div>
+
+        <Button
+          size={"sm"}
+          className="bg-blue-600 flex space-x-2"
+          onClick={() => {
+            router.push('/add_employees')
+          }}
+        >
+          <h1>Ajouté un Employer</h1>
+          <UserPlus />
+
+        </Button>
+      </div>
+
+
+      {/** saparator */}
+      <Separator className="w-full" />
+
+
+      {/** searche input */}
+      <div className="flex items-center justify-center my-5">
+        <div className="flex space-x-3 items-center">
+          <Input className="md:w-[300px] w-[250px] " placeholder="Trouver un employé" />
+          <Search className="text-blue-600" />
+        </div>
+
+      </div>
+
+
+      {/** Tables */}
+      <div className="flex flex-col space-y-3 ">
+        <div className="flex space-x-5 ">
+          <Button size={"sm"} className="">
+            Recharger
+          </Button>
+
+          <Button size={"sm"} variant="outline" className="flex space-x-2">
+            <h1>Télecharger la liste</h1>
+            <FolderDown />
+          </Button>
+        </div>
+        <Table columns={columns} dataSource={data} />
+      </div>
+    </div>
+  );
+}

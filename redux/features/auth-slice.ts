@@ -6,14 +6,16 @@ type InitialState = {
     value: AuthState
 }
 type AuthState = {
-    isAuth: boolean,
+    isAuth?: boolean,
     uid: string,
+    role: string,
 }
 
 const initialState = {
     value: {
         isAuth: false,
         uid: "",
+        role: "",
     } as AuthState
 } as  InitialState
 
@@ -30,11 +32,12 @@ export const auth = createSlice({
             return initialState;
         },
 
-        logIn: (state, action: PayloadAction<string>) => {
+        logIn: (state, action: PayloadAction<AuthState>) => {
             return {
                 value: {
                     isAuth: true,
-                    uid: action.payload,
+                    uid: action.payload.uid,
+                    role: action.payload.role
                 }
             }
         }

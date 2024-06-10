@@ -3,42 +3,15 @@ import Link from "next/link"
 import { DownOutlined } from '@ant-design/icons';
 import { Tree } from 'antd';
 import type { TreeDataNode, TreeProps } from 'antd';
-import { User, LayoutDashboard } from "lucide-react";
+import { User, LayoutDashboard, Settings, ShoppingBag, BadgeDollarSign, Users, ContactRound } from "lucide-react";
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-
-const treeData: TreeDataNode[] = [
-    {
-        title: 'RH',
-        key: '0-0',
-        children: [
-            {
-                title: 'Employées',
-                key: '0-0-0',
-            },
-            {
-                title: 'Visiteurs',
-                key: '0-0-1',
-                
-            },
-            {
-                title: 'Recrutements',
-                key: '0-0-2',
-                
-            },
-            {
-                title: 'Formations',
-                key: '0-0-3',
-                
-            },
-            {
-                title: 'Presences',
-                key: '0-0-4',
-                
-            },
-        ],
-    },
-];
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
 
 
 
@@ -57,34 +30,104 @@ const SidbarContent = () => {
                 {/** links */}
                 <div className="flex flex-col gap-5">
                     <Link href="" className="flex space-x-3" >
-                        <LayoutDashboard className={pathname == "/dashboard" ? "text-blue-600" : ""}/>
+                        <LayoutDashboard className={pathname == "/dashboard" ? "text-blue-600" : ""} />
                         <h1 className={pathname == "/dashboard" ? "font-bold" : ""}>Dashboard</h1>
                     </Link>
-                    
 
+                    {/** resource humain */}
                     <div className="flex space-x-3 " >
-                    <User className=""/>
-                    <Tree
-                        showLine
-                        switcherIcon={<DownOutlined />}
-                        onSelect={onSelect}
-                        treeData={treeData}
-                    />
+                        <div className="mt-3">
+                            <Users className={pathname == "/employees" || pathname == "/attendance" ? "text-blue-600 flex self-start" : "flex self-start"} />
+                        </div>
+                        
+                        <Accordion type="single" collapsible >
+                            <AccordionItem value="item-1">
+                                <AccordionTrigger className={pathname == "/employees" || pathname == "/attendance" ? "font-bold flex" :  "flex "}>RH</AccordionTrigger>
+                                <AccordionContent className="flex flex-col space-y-3">
+            
+                                    <Link className={pathname == "/employees" ? "font-bold text-blue-600" : ""} href="/employees">Employer</Link>
+                                     <Link className={pathname == "/attendance" ? "font-bold text-blue-600" : ""} href="/attendance">Presences</Link>
+                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Recrutements</Link>
+                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Congé</Link>
+                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Formations</Link>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
                     </div>
-                    
+
+
+                    {/** visiteuz */}
+                    <div className="flex space-x-3 " >
+                        <div className="mt-3">
+                            <ContactRound className={pathname == "" || pathname == "" ? "text-blue-600 flex self-start" : "flex self-start"} />
+                        </div>
+                        
+                        <Accordion type="single" collapsible >
+                            <AccordionItem value="item-1">
+                                <AccordionTrigger className={pathname == "/employees" || pathname == "" ? "font-bold flex" :  "flex "}> Visiteurs</AccordionTrigger>
+                                <AccordionContent className="flex flex-col space-y-3">
+            
+                                    <Link className={pathname == "/employees" ? "font-bold text-blue-600" : ""} href="/employees">Employer</Link>
+                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Visiteurs</Link>
+                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Recrutements</Link>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+
+                    {/** commercial */}
+                    <div className="flex space-x-3 " >
+                        <div className="mt-3">
+                            <ShoppingBag className={pathname == "" || pathname == "" ? "text-blue-600 flex self-start" : "flex self-start"} />
+                        </div>
+                        
+                        <Accordion type="single" collapsible >
+                            <AccordionItem value="item-1">
+                                <AccordionTrigger className={pathname == "/employees" || pathname == "" ? "font-bold flex" :  "flex "}> Commercial</AccordionTrigger>
+                                <AccordionContent className="flex flex-col space-y-3">
+            
+                                    <Link className={pathname == "/employees" ? "font-bold text-blue-600" : ""} href="/employees">Employer</Link>
+                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Visiteurs</Link>
+                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Recrutements</Link>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+
+
+                    {/** comptabilité */}
+                    <div className="flex space-x-3 " >
+                        <div className="mt-3">
+                            <BadgeDollarSign className={pathname == "/" || pathname == "" ? "text-blue-600 flex self-start" : "flex self-start"} />
+                        </div>
+                        
+                        <Accordion type="single" collapsible >
+                            <AccordionItem value="item-1">
+                                <AccordionTrigger className={pathname == "/employees" || pathname == "" ? "font-bold flex" :  "flex "}>Comptabilité</AccordionTrigger>
+                                <AccordionContent className="flex flex-col space-y-3">
+            
+                                    <Link className={pathname == "/employees" ? "font-bold text-blue-600" : ""} href="/employees">Employer</Link>
+                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Visiteurs</Link>
+                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Recrutements</Link>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+
                 </div>
 
 
                 {/** frams */}
                 <div className="flex flex-col gap-5">
-                    <Link href="" className="flex space-x-3" >
-                        <h1>Parametre</h1>
+                <Link href="" className="flex space-x-3" >
+                        <Settings className={pathname == "/dashboard" ? "text-blue-600" : ""} />
+                        <h1 className={pathname == "/dashboard" ? "font-bold" : ""}>Parametre</h1>
                     </Link>
 
                     <Link href="" className="flex space-x-3" >
                         <h1>Suport d'aide</h1>
                     </Link>
-                    
+
                 </div>
             </div>
 

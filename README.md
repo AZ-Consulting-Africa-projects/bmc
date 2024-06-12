@@ -45,3 +45,14 @@ Suggested code may be subject to a license. Learn more: ~LicenseLog:1294083119.
 # Ad employees
 # update employees
 #  delete employees
+
+
+
+les dependance: 
+react-html-table-to-excel 
+
+html2canvas 
+
+jspdf 
+
+react-csv

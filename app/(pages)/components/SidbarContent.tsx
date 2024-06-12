@@ -28,7 +28,7 @@ const SidbarContent = () => {
             <h1 className="text-3xl font-bold text-center md:mt-10 ">Logo</h1>
             <div className="flex h-screen flex-col justify-between content-between">
                 {/** links */}
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-3">
                     <Link href="" className="flex space-x-3" >
                         <LayoutDashboard className={pathname == "/dashboard" ? "text-blue-600" : ""} />
                         <h1 className={pathname == "/dashboard" ? "font-bold" : ""}>Dashboard</h1>
@@ -44,12 +44,11 @@ const SidbarContent = () => {
                             <AccordionItem value="item-1">
                                 <AccordionTrigger className={pathname == "/employees" || pathname == "/attendance" ? "font-bold flex" :  "flex "}>RH</AccordionTrigger>
                                 <AccordionContent className="flex flex-col space-y-3">
-            
                                     <Link className={pathname == "/employees" ? "font-bold text-blue-600" : ""} href="/employees">Employer</Link>
                                      <Link className={pathname == "/attendance" ? "font-bold text-blue-600" : ""} href="/attendance">Presences</Link>
-                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Recrutements</Link>
-                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Congé</Link>
-                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Formations</Link>
+                                    <Link className={pathname == "/recrutement" ? "font-bold text-blue-600" : ""} href="/">Recrutements</Link>
+                                    <Link className={pathname == "/conge" ? "font-bold text-blue-600" : ""} href="/">Congé</Link>
+                                    <Link className={pathname == "/formation" ? "font-bold text-blue-600" : ""} href="/">Formations</Link>
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
@@ -125,7 +124,7 @@ const SidbarContent = () => {
                     </Link>
 
                     <Link href="" className="flex space-x-3" >
-                        <h1>Suport d'aide</h1>
+                        <h1 className="text-sm font-bold text-center">Suport d'aide</h1>
                     </Link>
 
                 </div>

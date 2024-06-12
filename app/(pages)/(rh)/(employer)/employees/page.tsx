@@ -8,7 +8,9 @@ import { Space, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
 import { useRouter } from "next/navigation";
 import Swal from 'sweetalert2'
-
+import ExportDialog from "@/app/(pages)/components/ExportDialog";
+import {useEffect, useRef, useState} from "react";
+import { searchFuction } from "@/lib/utils";
 
 interface DataType {
   key: string;
@@ -22,6 +24,9 @@ interface DataType {
 
 export default function Employees() {
   const router = useRouter();
+  const refPdf: any = useRef();
+  const [query, setQuery] = useState('');
+    const [results, setResults] = useState<any[]>([]);
 
 
   const columns: TableProps<DataType>['columns'] = [
@@ -171,12 +176,9 @@ export default function Employees() {
             Recharger
           </Button>
 
-          <Button size={"sm"} variant="outline" className="flex space-x-2">
-            <h1>Télecharger la liste</h1>
-            <FolderDown />
-          </Button>
+          <ExportDialog data={data} refTable={refPdf} idTable={"table"} />
         </div>
-        <Table columns={columns} dataSource={data} />
+         <Table ref={refPdf} id="table" columns={columns} dataSource={data} />
       </div>
     </div>
   );

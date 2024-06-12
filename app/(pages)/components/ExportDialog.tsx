@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { CSVLink } from "react-csv";
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
+
 import {
     Dialog,
     DialogContent,
@@ -48,21 +48,15 @@ const ExportDialog = ({ data,
 
                         <div className="w-[150px] h-[200px] rounded-md items-center justify-center flex flex-col gap-2 ">
                             <Image src={"/image/exceller.png"} width={100} height={100} alt="" className="object-cover " />
-                            <ReactHTMLTableToExcel
-                                id="test-table-xls-button"
-                                className="justify-center flex flex-col gap-2"
-                                table={idTable}
-                                filename="tablexls"
-                                sheet="tablexls"
-                                buttonText="EXCEL" />
-
+                            <h1>EXCEL</h1>
+                                                     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
                         </div>
 
                         <div className="w-[150px] h-[200px] rounded-md items-center justify-center flex flex-col gap-2 ">
-                            <CSVLink data={data} className="  items-center justify-center flex flex-col gap-2 ">
-                                <Image src={"/image/csv.png"} width={100} height={100} alt="" className="object-cover " />
+                        <Image src={"/image/csv.png"} width={100} height={100} alt="" className="object-cover " />
                                 <h1>CSV</h1>
-                            </CSVLink>
+                           
 
                         </div>
                     </div>

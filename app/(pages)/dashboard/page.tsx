@@ -23,18 +23,18 @@ const data = [
     { value: 10, label: 'B' },
     { value: 15, label: 'C' },
     { value: 20, label: 'D' },
-  ];
-  
-  const size = {
+];
+
+const size = {
     width: 400,
     height: 200,
-  };
+};
 
-  const settings = {
+const settings = {
     width: 200,
     height: 200,
     value: 60,
-  };
+};
 
 /**
  * TODO: 
@@ -58,17 +58,17 @@ export default function Dashboard() {
     return (
         <main className="flex flex-col space-y-10">
             <h1 className="text-2xl font-bold ">Vue d'ensemble </h1>
-            <div className="flex space-x-20 ">
+            <div className="flex md:space-x-20 space-y-20  md:flex-row flex-col">
                 <div className='flex flex-col gap-2 '>
-                    <div className='flex  gap-2 '>
-                    <DasshCard1 image={'/image/comptable.png'} title={'Nombre d\'employé présent'} value={10} color={'bg-purple-200'} />
-                    <DasshCard1 image={'/image/opportunite.png'} title={'Nouvelle opportunités'} value={10} color={'bg-sky-200'} />
+                    <div className='flex   gap-2 '>
+                        <DasshCard1 image={'/image/comptable.png'} title={'Nombre d\'employé présent'} value={10} color={'bg-purple-200'} />
+                        <DasshCard1 image={'/image/opportunite.png'} title={'Nouvelle opportunités'} value={10} color={'bg-sky-200'} />
                     </div>
 
 
                     <div className='flex  gap-2 '>
-                    <DasshCard1 image={'/image/commerce-electronique.png'} title={'Ventes totales'} value={10} color={'bg-lime-200'} />
-                    <DasshCard1 image={'/image/depenser-de-largent.png'} title={'Dépenses totales'} value={10} color={'bg-yellow-200'} />
+                        <DasshCard1 image={'/image/commerce-electronique.png'} title={'Ventes totales'} value={10} color={'bg-lime-200'} />
+                        <DasshCard1 image={'/image/depenser-de-largent.png'} title={'Dépenses totales'} value={10} color={'bg-yellow-200'} />
                     </div>
 
                     <div className='flex  gap-2 items-center mt-2'>
@@ -76,46 +76,46 @@ export default function Dashboard() {
                         <PieChart
                             series={[
                                 {
-                                arcLabel: (item) => `${item.label} (${item.value})`,
-                                arcLabelMinAngle: 45,
-                                data,
+                                    arcLabel: (item) => `${item.label} (${item.value})`,
+                                    arcLabelMinAngle: 45,
+                                    data,
                                 },
                             ]}
                             sx={{
                                 [`& .${pieArcLabelClasses.root}`]: {
-                                fill: 'white',
-                                fontWeight: 'bold',
+                                    fill: 'white',
+                                    fontWeight: 'bold',
                                 },
                             }}
                             {...size}
-                         />
+                        />
                         {/** gouge */}
-                       <Gauge
+                        <Gauge
                             {...settings}
                             cornerRadius="50%"
                             sx={(theme) => ({
                                 [`& .${gaugeClasses.valueText}`]: {
-                                fontSize: 40,
+                                    fontSize: 40,
                                 },
                                 [`& .${gaugeClasses.valueArc}`]: {
-                                fill: '#52b202',
+                                    fill: '#52b202',
                                 },
                                 [`& .${gaugeClasses.referenceArc}`]: {
-                                fill: theme.palette.text.disabled,
+                                    fill: theme.palette.text.disabled,
                                 },
                             })}
                         />
 
                     </div>
-                    
+
                 </div>
-        {/** notificaiotns */}
-                <div className='w-[350px] h-[450px] bg-gray-200 shadow-xl p-5 '>
+                {/** notificaiotns */}
+                <div className='w-[350px] hidden md:hidden h-[450px] bg-gray-200 shadow-xl p-5 '>
                     <h1 className="text-2xl font-bold ">Notifications</h1>
                 </div>
             </div>
 
-            
+
 
             <div className="flex space-5">
                 <div>

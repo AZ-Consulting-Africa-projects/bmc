@@ -46,9 +46,9 @@ const SidbarContent = () => {
                                 <AccordionContent className="flex flex-col space-y-3">
                                     <Link className={pathname == "/employees" ? "font-bold text-blue-600" : ""} href="/employees">Employer</Link>
                                      <Link className={pathname == "/attendance" ? "font-bold text-blue-600" : ""} href="/attendance">Presences</Link>
-                                    <Link className={pathname == "/recrutement" ? "font-bold text-blue-600" : ""} href="/">Recrutements</Link>
-                                    <Link className={pathname == "/conge" ? "font-bold text-blue-600" : ""} href="/">Congé</Link>
-                                    <Link className={pathname == "/formation" ? "font-bold text-blue-600" : ""} href="/">Formations</Link>
+                                    <Link className={pathname == "/recrutement" ? "font-bold text-blue-600" : ""} href="/recrutement">Recrutements</Link>
+                                    <Link className={pathname == "/conge" ? "font-bold text-blue-600" : ""} href="/conge">Congé</Link>
+                                    <Link className={pathname == "/formation" ? "font-bold text-blue-600" : ""} href="/formation">Formations</Link>
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>

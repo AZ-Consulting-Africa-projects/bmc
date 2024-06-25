@@ -17,14 +17,14 @@ import { Select } from 'antd';
 import type { SelectProps } from 'antd';
 
 
-export default function Formation() {
+
+export default function Formation({ params }: { params: { id: string } }) {
     const router = useRouter();
     const [value, setValue] = useState("");
     const [image, setImage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const { toast } = useToast();
-
 
     const formik = useFormik({
         initialValues: {
@@ -59,12 +59,14 @@ export default function Formation() {
         formik.values.userIds = value;
         console.log(`selected ${value}`);
     };
+
+
     return (
         <main className='flex flex-col space-y-10 mb-10'>
             {/** head */}
             <div className="flex justify-between content-between w-full items-center">
                 <div>
-                    <h1 className="md:text-3xl text-xl font-bold">Ajouter une formation</h1>
+                    <h1 className="md:text-3xl text-xl font-bold">Editer une formation</h1>
                     <p className="text-gray-600 text-[13px] ">Employees mangement</p>
                 </div>
 

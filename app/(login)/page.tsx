@@ -24,13 +24,16 @@ export default function Home() {
   const { toast } = useToast();
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
-  const isConfig = useSelector((state: RootState) => state.configReducer.value.isConfig)
-
+  const isConfig = useSelector((state: RootState) => state.config.isConfig)
+  const ui = useSelector((state: RootState) => state.auth.value.isAuth);
+  console.log(ui);
+ console.log(isConfig);
   useEffect(() => {
+    console.log(isConfig);
     if (isConfig) {
       router.replace("/login");
     }
-  }, [isConfig])
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -71,7 +74,7 @@ export default function Home() {
         
         if (resp.ok && resp2.ok) {
           dispatch(configIn());
-           dispatch(setLogo({url: values.logo}));
+           dispatch(setLogo(values.logo));
           toast({
             title: "Informations enrégistrés avec succès."
           });
@@ -103,7 +106,12 @@ export default function Home() {
     }
   })
 
-  return (
+  if(isConfig) {
+    return (
+      <main></main>
+    )
+  }else {
+    return (
     <main className="flex flex-col gap-10 h-screen items-center justify-center md:px-[16rem] px-4 ">
       <h1 className="text-center text-4xl font-bold text-blue-600">
         Configurations de base
@@ -241,4 +249,6 @@ export default function Home() {
       </form>
     </main>
   );
+  }
+  
 }

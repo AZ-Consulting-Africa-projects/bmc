@@ -1,46 +1,35 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-type InitialState = {
-    value: ConfigState
-}
 type ConfigState = {
-    isConfig: boolean,
-}
+    isConfig: boolean;
+};
 
-const initialState = {
-    value: {
-        isConfig: false,
-    } as ConfigState
-} as  InitialState
+const initialState: ConfigState = {
+    isConfig: false,
+};
 
 const persistConfig = {
-    key: 'root',
+    key: 'config',
     storage,
 };
 
-export const config = createSlice({
-    name: "config",
+export const configSlice = createSlice({
+    name: 'config',
     initialState,
     reducers: {
-        configOut: () => {
-            return initialState;
+        configOut: (state) => {
+            state.isConfig = false;
         },
-
-        configIn: () => {
-            return {
-                value: {
-                    isConfig: true,
-                }
-            }
-        }
-    }
-})
-
+        configIn: (state) => {
+            state.isConfig = true;
+        },
+    },
+});
 
 // Wrapping the reducer with persistReducer
-const configReducer = persistReducer(persistConfig, config.reducer);
+const configReducer = persistReducer(persistConfig, configSlice.reducer);
 
-export const { configIn, configOut } = config.actions
+export const { configIn, configOut } = configSlice.actions;
 export default configReducer;

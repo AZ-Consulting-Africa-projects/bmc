@@ -19,7 +19,6 @@ export default function Home() {
   const router = useRouter();
   const { toast } = useToast();
   const dispatch = useDispatch();
-  const logo = useSelector((state: RootState) => state.logoReducer.value.url)
 
 
   const formik = useFormik({

@@ -22,7 +22,7 @@ const SidbarContent = () => {
     const router = useRouter();
     const pathname = usePathname();
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-    const logo = useSelector((state: RootState) => state.logoReducer.value.url);
+    const logo = useSelector((state: RootState) => state.logo.url);
 
     
     const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {

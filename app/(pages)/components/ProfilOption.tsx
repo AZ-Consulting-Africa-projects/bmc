@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
 const ProfilOption = () => {
-    const userName = useSelector((state: RootState) => state.authReducer.value.name)
+    const userName = useSelector((state: RootState) => state.auth.value.name)
     const router = useRouter();
     const dispatch = useDispatch();
     return (

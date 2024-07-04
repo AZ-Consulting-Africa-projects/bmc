@@ -1,8 +1,7 @@
-import {configureStore} from '@reduxjs/toolkit'
-import authReducer from './features/auth-slice'
-import { combineReducers } from 'redux';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import authReducer from './features/auth-slice';
 import configReducer from './features/config-slice';
 import logoReducer from './features/logo-slice';
 
@@ -18,16 +17,14 @@ const persistConfig = {
     storage,
 };
 
-
 const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export const store = configureStore({
-    reducer : {
-        authReducer,
-        configReducer,
-        logoReducer
-    }
-})
+    reducer: persistedReducer
+});
+
 // Créer le persisteur Redux
 export const persistor = persistStore(store);
-export type RootState = ReturnType<typeof store.getState>
+
+export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

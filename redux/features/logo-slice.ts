@@ -1,48 +1,35 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-type InitialState = {
-    value: LogoState
-}
 type LogoState = {
-    
-    url: string,
-}
+    url: string;
+};
 
-const initialState = {
-    value: {
-        url: "",
-    } as LogoState
-} as  InitialState
+const initialState: LogoState = {
+    url: '',
+};
 
 const persistConfig = {
-    key: 'root',
+    key: 'logo',
     storage,
 };
 
-export const logo = createSlice({
-    name: "logo",
+export const logoSlice = createSlice({
+    name: 'logo',
     initialState,
     reducers: {
-        logoIni: () => {
-            return initialState;
+        logoIni: (state) => {
+            state.url = initialState.url;
         },
-
-        setLogo: (state, action: PayloadAction<LogoState>) => {
-            return {
-                value: {
-                    
-                    url: action.payload.url
-                }
-            }
-        }
-    }
-})
-
+        setLogo: (state, action: PayloadAction<string>) => {
+            state.url = action.payload;
+        },
+    },
+});
 
 // Wrapping the reducer with persistReducer
-const logoReducer = persistReducer(persistConfig, logo.reducer);
+const logoReducer = persistReducer(persistConfig, logoSlice.reducer);
 
-export const { setLogo, logoIni } = logo.actions
+export const { setLogo, logoIni } = logoSlice.actions;
 export default logoReducer;

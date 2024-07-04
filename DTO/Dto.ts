@@ -1,6 +1,48 @@
 import Joi from "joi";
 
 export class Dto {
+
+    static postDto() {
+        const schema = Joi.object({
+            posteName: Joi.string().required(),
+            deparetementId: Joi.number().required(),
+            description: Joi.string().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional(),
+            id: Joi.number().optional(),
+        });
+
+        return schema;
+    }
+
+    static departementDto() {
+        const schema = Joi.object({
+            departementName: Joi.string().required(),
+            description: Joi.string().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional(),
+            id: Joi.number().optional(),
+        });
+
+        return schema;
+    }
+
+    static settingsDto() {
+        const schema = Joi.object({
+            entreprise_name: Joi.string().required(),
+            logo: Joi.string().required(),
+            adress: Joi.string().required(),
+            phone: Joi.number().required(),
+            email: Joi.string().email().required(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional(),
+            id: Joi.number().optional(),
+        });
+
+        return schema;
+    }
+
+
     static userDto() {
         const schema = Joi.object({
             email: Joi.string().email().required(),
@@ -12,9 +54,10 @@ export class Dto {
             role: Joi.string().required(),
             isVisible: Joi.boolean().optional(),
             isActived: Joi.boolean().optional(),
-            hire_date: Joi.string().required(),
+            hire_date: Joi.string().optional(),
             salary: Joi.number().optional(),
             phone: Joi.number().required(),
+            imageUrl: Joi.string().optional(),
             id: Joi.number().optional(),
         });
         return schema;

@@ -14,7 +14,12 @@
  "Prisma.prisma"
  "Prisma.prisma-insider"
  "rangav.vscode-thunder-client"
- "zardoy.js-debug-extras"];
+ "zardoy.js-debug-extras"
+ "dsznajder.es7-react-js-snippets"
+ "edwinhuish.better-comments-next"
+ "PulkitGangwar.nextjs-app-directory-commands"
+ "PulkitGangwar.nextjs-snippets"
+ "YuTengjing.vscode-fe-helper"];
   idx.previews = {
     previews = {
       web = {

@@ -5,7 +5,7 @@ interface Props {
     image: string;
     title: string;
     value: number;
-    color: string;
+    color?: string;
 }
 
 
@@ -13,8 +13,8 @@ const DasshCard1 = ({image,
     title,
     value, color}: Props) => {
     return (
-        <div className={`flex flex-col space-y-1 p-4 w-full md:w-[300px] h-[150px]  rounded-xl ${color}`}>
-                <div className="bg-white w-[40px] h-[40px] rounded-md flex items-center justify-center p-2">
+        <div className={`flex flex-col shadow-xl bg-slate-100 space-y-1 p-4 w-full md:w-[300px] h-auto  rounded-xl ${color}`}>
+                <div className="bg-white  w-[40px] h-[40px] rounded-md flex items-center justify-center p-2">
                     <Image src={image} alt="Vue logo" width={40} height={40} />
                 </div>
 

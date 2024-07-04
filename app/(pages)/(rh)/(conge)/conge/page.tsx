@@ -3,7 +3,7 @@
 export default function Formation() {
     return(
         <main>
-            <h1>Formation</h1>
+            <h1>congé</h1>
         </main>
     );
 }

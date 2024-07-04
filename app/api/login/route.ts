@@ -20,7 +20,7 @@ export async function POST(req: Request) {
         // Vérification de l'existence de l'utilisateur et de la correspondance du mot de passe
         // Vérification de l'existence de l'utilisateur
         if (user.length === 0) {
-            return new NextResponse(JSON.stringify({msg:'l utilisateur n existe pass' , ok: false}), {status: 500});
+            return NextResponse.json({msg:'l utilisateur n existe pass' , ok: false, status: 500});
         }
 
         const users: UserModel = user[0];
@@ -28,17 +28,20 @@ export async function POST(req: Request) {
         // Vérification de la correspondance du mot de passe
         const isPasswordValid = await bcrypt.compare(dataValidate.value.password, String(users.password));
         if (!isPasswordValid) {
-            return new NextResponse(JSON.stringify({msg:'mot de passe incorrecte', ok: false}), {status: 500});
+            return NextResponse.json({msg:'mot de passe incorrecte', ok: false, status: 500 });
 
-        }
-        return new NextResponse(JSON.stringify({
+        } else {
+             return  NextResponse.json({
             id: users.id,
             role: users.role,
+            name: users.firstName,
             ok: true,
-        }), { status: 200 });
+         status: 200} );
+        }
+       
         
     }catch (error) {
         console.error('[user_login]', error);
-        return new NextResponse(JSON.stringify({msg:'Internal error', ok: false}), {status: 500});
+        return NextResponse.json({msg:`Internal error: ${error}`, ok: false, status: 500});
     }
 }

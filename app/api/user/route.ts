@@ -12,15 +12,15 @@ export async function POST(req: Request) {
 
         const dataValidation = Dto.userDto().validate(userModel);
         if (dataValidation.error) {
-            return new NextResponse(dataValidation.error.message, { status: 400 });
+            return  NextResponse.json({msg: dataValidation.error.message,  status: 400, ok:false});
         } else {
             const user = await prismadb.user.create({ data: dataValidation.value });
-            return NextResponse.json(user);
+            return NextResponse.json({users: user, ok: true});
         }
 
     } catch (error) {
         console.error('[user_post]', error);
-        return new NextResponse('Internal error', { status: 500 });
+        return  NextResponse.json({msg: `Internal error ${error}`,  status: 500, ok: false});
     }
 }
 

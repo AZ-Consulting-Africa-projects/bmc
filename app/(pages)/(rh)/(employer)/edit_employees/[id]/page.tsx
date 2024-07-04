@@ -13,6 +13,7 @@ import { useState } from "react";
 import ImageUpload from "@/components/ImageUpload";
 import { useToast } from "@/components/ui/use-toast";
 import { UserModel } from "@/models/UserModel";
+import HeadDetaill from "@/app/(pages)/components/HeadDetail";
 
 export default function EditEmployer({params}: {params: {id: string}}) {
     const router = useRouter();
@@ -94,24 +95,8 @@ export default function EditEmployer({params}: {params: {id: string}}) {
     return (
         <div className='flex flex-col space-y-10 mb-10'>
         {/** head */}
-        <div className="flex justify-between content-between w-full items-center">
-            <div>
-                <h1 className="md:text-3xl text-xl font-bold">Editer  les info de </h1>
-                <p className="text-gray-600 text-[13px] ">Employees mangement</p>
-            </div>
-
-            <Button
-                size={"small"}
-                className="bg-blue-600 flex space-x-2 text-white p-2"
-                onClick={() => {
-                    router.push('/employees')
-                }}
-            >
-
-                <ArrowLeft />
-
-            </Button>
-        </div>
+        <HeadDetaill title={"Editer  les info de"} subtitle={"Employees mangement"} />
+       
 
         {/** saparator */}
         <Separator className="w-full" />

@@ -9,6 +9,7 @@ type AuthState = {
     isAuth?: boolean,
     uid: string,
     role: string,
+    name: string,
 }
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
         isAuth: false,
         uid: "",
         role: "",
+        name: "",
     } as AuthState
 } as  InitialState
 
@@ -37,7 +39,8 @@ export const auth = createSlice({
                 value: {
                     isAuth: true,
                     uid: action.payload.uid,
-                    role: action.payload.role
+                    role: action.payload.role,
+                    name: action.payload.name,
                 }
             }
         }

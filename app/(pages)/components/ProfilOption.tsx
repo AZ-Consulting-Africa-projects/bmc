@@ -9,10 +9,16 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { logOut } from "@/redux/features/auth-slice";
+import { RootState } from "@/redux/store";
 import { User } from "lucide-react"
-
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProfilOption = () => {
+    const userName = useSelector((state: RootState) => state.authReducer.value.name)
+    const router = useRouter();
+    const dispatch = useDispatch();
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className="flex space-x-1 border items-center rounded-2xl px-2 p-1">
@@ -21,7 +27,7 @@ const ProfilOption = () => {
                     <User />
                 </div>
                 <h1 className="text-gray-600 font-bold text-[13px] ">
-                    nom prenom
+                    {userName}
                 </h1>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -33,7 +39,12 @@ const ProfilOption = () => {
                     </Button>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex justify-center">
-                    <Button size="sm" type="button" variant={"destructive"} className="w-full">
+                    <Button
+                    onClick={() => {
+                        dispatch(logOut());
+                        router.push('/login');
+                    }}
+                     size="sm" type="button" variant={"destructive"} className="w-full">
                         se Deconnecter
                     </Button>
                 </DropdownMenuItem>

@@ -13,17 +13,54 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
+model Settings {
+  id    Int     @id @default(autoincrement())
+  entreprise_name String
+  logo  String
+  adress  String
+  phone  Int
+  email  String
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Departement {
+  id    Int     @id @default(autoincrement())
+  departementName String
+  description String?
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postes Poste[]
+}
+
+model Poste {
+  id    Int     @id @default(autoincrement())
+  posteName String
+  description String?
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deparetementId Int
+  deparetement Departement @relation(fields: [deparetementId], references: [id])
+}
+
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   firstName String
   lastName  String
-  password  String
+  password  String?
   phone Int
   departement String
   position String
-  hire_date String
-  salary Decimal
+  hire_date String? 
+  salary Decimal?
+  imageUrl String?
   role RoleType
   isVisible Boolean @default(true)
   isActived Boolean @default(true)

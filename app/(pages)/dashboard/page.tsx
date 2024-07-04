@@ -71,8 +71,8 @@ export default function Dashboard() {
                         <DasshCard1 image={'/image/depenser-de-largent.png'} title={'Dépenses totales'} value={10} color={'bg-yellow-200'} />
                     </div>
 
-                    <div className='flex  gap-2 items-center mt-2'>
-                        {/** pie */}
+                  {/**  <div className='flex  gap-2 items-center mt-2'>
+                        {/** pie 
                         <PieChart
                             series={[
                                 {
@@ -89,7 +89,7 @@ export default function Dashboard() {
                             }}
                             {...size}
                         />
-                        {/** gouge */}
+                        {/** gouge 
                         <Gauge
                             {...settings}
                             cornerRadius="50%"
@@ -106,18 +106,18 @@ export default function Dashboard() {
                             })}
                         />
 
-                    </div>
+                    </div> */}
 
                 </div>
-                {/** notificaiotns */}
+                {/** notificaiotns 
                 <div className='w-[350px] hidden md:hidden h-[450px] bg-gray-200 shadow-xl p-5 '>
                     <h1 className="text-2xl font-bold ">Notifications</h1>
-                </div>
+                </div>*/}
             </div>
 
 
 
-            <div className="flex space-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <BarChart
                         xAxis={[

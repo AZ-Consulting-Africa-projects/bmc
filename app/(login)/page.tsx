@@ -3,100 +3,242 @@ import Image from "next/image";
 import { Button, Input } from 'antd';
 import * as Yup from 'yup';
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { LoginModel } from "@/models/LoginModel";
 import { Api } from "../api/Api";
 import { useDispatch, useSelector } from "react-redux";
+import { configIn } from "@/redux/features/config-slice";
+import ImageUpload from "@/components/ImageUpload";
+import { SettingsModel } from "@/models/SettingsModel";
+import { UserModel } from "@/models/UserModel";
 import { RootState } from "@/redux/store";
-import { logIn } from "@/redux/features/auth-slice";
+import { setLogo } from "@/redux/features/logo-slice";
 
 export default function Home() {
-  const [loading, setLoadint] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
   const { toast } = useToast();
   const dispatch = useDispatch();
+  const [image, setImage] = useState("");
+  const isConfig = useSelector((state: RootState) => state.configReducer.value.isConfig)
+
+  useEffect(() => {
+    if (isConfig) {
+      router.replace("/login");
+    }
+  }, [isConfig])
 
   const formik = useFormik({
     initialValues: {
       phone: "",
-      password: ""
+      password: "",
+      email: "",
+      entreprise_name: "",
+      logo: "",
+      address: "",
+      lastName: "",
+      firstName: "",
+      password1: "",
+
+
     },
     validationSchema: Yup.object({
       phone: Yup.string().required("Le numéro de téléphone est obligatoire"),
-      password: Yup.string().required("Le mot de passe est obligatoire")
+      password: Yup.string().required("Le mot de passe est obligatoire"),
+      email: Yup.string().required("L'email est obligatoire"),
+      entreprise_name: Yup.string().required("Le nom de l'entreprise est obligatoire"),
+      logo: Yup.string().required("Le logo de l'entreprise est obligatoire"),
+      address: Yup.string().required("L'adresse est obligatoire"),
+      lastName: Yup.string().required("Le nom est obligatoire"),
+      firstName: Yup.string().required("Le prénom est obligatoire"),
+      password1: Yup.string().required("Le mot de passe est obligatoire"),
     }),
     onSubmit: async (values) => {
-      console.log(values);
-      setLoadint(true);
-      const loginModel = new LoginModel(Number(values.phone), values.password);
-      console.log(loginModel);
-     /* const resp = await Api.create("/api/login", loginModel);
-      if(resp.ok) {
-        dispatch(logIn({uid:resp.id, role: resp.role}));
+      setLoading(true);
+      if (values.password == values.password1) {
+        
+        const settingsModel = new SettingsModel(values.entreprise_name, values.logo, values.address, Number(values.phone), values.email);
+        const userModel = new UserModel(values.email, values.firstName, values.lastName, Number(values.phone), "admin", "admin", "ADMIN", values.password, true, true, "12/02/2020", values.logo, 0);
+      
 
+        const resp = await Api.create("/api/settings", settingsModel);
+        
+        const resp2 = await Api.create("/api/user", userModel);
+        
+        if (resp.ok && resp2.ok) {
+          dispatch(configIn());
+           dispatch(setLogo({url: values.logo}));
+          toast({
+            title: "Informations enrégistrés avec succès."
+          });
+          formik.handleReset;
+          router.push("/login");
+
+          setLoading(false);
+        } else {
+          toast({
+            title: "Une erreur s'est produite",
+            variant: "destructive"
+          });
+          console.error(resp.msg);
+          console.error(resp2.msg);
+          setLoading(false);
+          formik.handleReset;
+        }
+
+
+      }
+      else {
         toast({
-          title: "Vous ete maintenant connecter"
-        })
-
-        router.push("/dashboard");
-        setLoadint(false);
-        formik.initialValues = {
-          phone: "",
-          password: ""
-        }
-      }else {
-        setErrorMsg("Le numéro de téléphone ou le mot de passe est incorrect");
-        setLoadint(false);
-        formik.initialValues = {
-          phone: "",
-          password: ""
-        }
-      }*/
-      router.push("/dashboard");
-      setLoadint(false);
-     
+          title: "Les mots de passe ne sont pas conformes",
+          variant: "destructive"
+        });
+        setLoading(false);
+      }
+      setLoading(false);
     }
   })
 
   return (
-    <main className="flex h-screen items-center justify-center mx-4 ">
-      <div className="bg-slate-200 md:w-[400px] w-full px-4 py-8 rounded-xl justify-center flex flex-col space-y-8">
-      <h1 className="text-4xl  text-center font-black  ">LOGO</h1>
-        <div className="">
-          <h1 className="md:text-4xl text-2xl text-center font-bold  ">Page de connection</h1>
-          <h1 className="text-right mr-10 text-[15px]  text-blue-600 ">Mot de passe oublié</h1>
+    <main className="flex flex-col gap-10 h-screen items-center justify-center md:px-[16rem] px-4 ">
+      <h1 className="text-center text-4xl font-bold text-blue-600">
+        Configurations de base
+      </h1>
+
+      <form onSubmit={formik.handleSubmit} className=" p-10 grid grid-cols-1 md:grid-cols-2 gap-4  w-full border border-blue-600 h-auto rounded-3xl ">
+        {/** form1 */}
+        <div className="flex flex-col space-y-5 w-full">
+          <h1 className="text-2xl font-bold text-blue-400">Information de l'entreprise</h1>
+          {/** name  */}
+          <div>
+            <label className={formik.touched.entreprise_name && formik.errors.entreprise_name ? "text-red-600" : ""}>
+              {formik.touched.entreprise_name && formik.errors.entreprise_name ? formik.errors.entreprise_name : " Nom de l'enteprise "}
+              <span className="text-red-600">*</span>
+            </label>
+            <Input type="text" name="entreprise_name" value={formik.values.entreprise_name} onChange={formik.handleChange} onBlur={formik.handleBlur} className="" />
+          </div>
+
+
+          {/** logo */}
+          <div>
+            <label className={formik.touched.logo && formik.errors.logo ? "text-red-600" : ""}>
+              {formik.touched.logo && formik.errors.logo ? formik.errors.logo : "Logo de l'entreprise"}
+              <span className="text-red-600">*</span>
+            </label>
+
+            <ImageUpload
+              style1="border border-gray-200 rounded-xl"
+              style2="h-[25px] "
+              value={image}
+              disable={loading}
+              onChange={(url: string) => {
+                if (url != "") {
+                  setImage(url);
+                  formik.setFieldValue("logo", url);
+                }
+
+              }}
+              onRemove={() => {
+                setImage("");
+              }}
+
+            />
+            {/*<Input type="text" name="logo" value={formik.values.logo} onChange={formik.handleChange} onBlur={formik.handleBlur} className="" />*/}
+          </div>
+
+          {/** Address */}
+          <div>
+            <label className={formik.touched.address && formik.errors.address ? "text-red-600" : ""}>
+              {formik.touched.address && formik.errors.address ? formik.errors.address : "Adresse de l'entreprise"}
+              <span className="text-red-600">*</span>
+            </label>
+            <Input type="text" name="address" value={formik.values.address} onChange={formik.handleChange} onBlur={formik.handleBlur} className="" />
+          </div>
+
+          {/** number */}
+          <div>
+            <label className={formik.touched.phone && formik.errors.phone ? "text-red-600" : ""}>
+              {formik.touched.phone && formik.errors.phone ? formik.errors.phone : "Numéro de téléphone"}
+              <span className="text-red-600">*</span>
+            </label>
+            <Input type="tel" name="phone" value={formik.values.phone} onChange={formik.handleChange} onBlur={formik.handleBlur} className="" />
+          </div>
         </div>
 
-        <h1 className="font-bold text-red-600 text-center"> {errorMsg != "" && errorMsg} </h1>
 
-        <form onSubmit={formik.handleSubmit} className="flex flex-col space-y-5">
 
+        {/** form2 */}
+        <div className="flex flex-col space-y-5 w-full">
+          <h1 className="text-2xl font-bold text-blue-400">Information de l'adminisatrteur</h1>
+          {/** name  */}
           <div>
-            <label className={formik.errors.phone && formik.touched.phone ? "text-red-600 text-sm" : "text-gray-600 text-sm"}>{formik.errors.phone && formik.touched.phone ? formik.errors.phone : "Numéro de téléphone"}</label>
-            <Input type="tel" name="phone" value={formik.values.phone} onChange={formik.handleChange} className="" />
+            <label className={formik.touched.firstName && formik.errors.firstName ? "text-red-600" : ""}>
+              {formik.touched.firstName && formik.errors.firstName ? formik.errors.firstName : "Nom de l'adminisatrteur"}
+              <span className="text-red-600">*</span>
+            </label>
+            <Input type="text" name="firstName" value={formik.values.firstName} onChange={formik.handleChange} onBlur={formik.handleBlur} className="" />
           </div>
 
-          <div>
-            <label className={formik.errors.password && formik.touched.password ? "text-red-600 text-sm" : "text-gray-600 text-sm"}> {formik.errors.password && formik.touched.password ? formik.errors.password : "Mot de passe"} </label>
 
-            <Input.Password
-              type="password"
-              name="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-            />
+          {/** last name */}
+          <div>
+            <label className={formik.touched.lastName && formik.errors.lastName ? "text-red-600" : ""}>
+              {formik.touched.lastName && formik.errors.lastName ? formik.errors.lastName : "Prénom de l'adminisatrteur"}
+              <span className="text-red-600">*</span>
+            </label>
+            <Input type="text" name="lastName" value={formik.values.lastName} onChange={formik.handleChange} onBlur={formik.handleBlur} className="" />
           </div>
 
-          <Button htmlType="submit" className="bg-blue-600 text-white w-[200px] flex self-center " loading={loading}>
-            Se connecter
+          {/** email */}
+          <div>
+            <label className={formik.touched.email && formik.errors.email ? "text-red-600" : ""}>
+              {formik.touched.email && formik.errors.email ? formik.errors.email : "Email de l'adminisatrteur"}
+              <span className="text-red-600">*</span>
+            </label>
+            <Input type="email" name="email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} className="" />
+          </div>
+
+          {/** password */}
+          <div className="flex md:flex-row flex-col gap-4 md:justify-between md:content-between md:items-center">
+            {/** passs1 */}
+            <div>
+              <label className={formik.touched.password && formik.errors.password ? "text-red-600" : ""}>
+                {formik.touched.password && formik.errors.password ? formik.errors.password : "Mot de Passe"}
+                <span className="text-red-600">*</span>
+              </label>
+              <Input
+                type="password"
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                pattern="(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}"
+                title="Le mot de passe doit contenir au moins 8 caractères, dont au moins un chiffre et un caractère spécial."
+                required
+                className="" />
+            </div>
+
+            {/** passs2 */}
+            <div>
+              <label className={formik.touched.password1 && formik.errors.password1 ? "text-red-600" : ""}>
+                {formik.touched.password1 && formik.errors.password1 ? formik.errors.password1 : "Confirmer le Mot de Passe"}
+                <span className="text-red-600">*</span>
+              </label>
+              <Input type="password" name="password1" value={formik.values.password1} onChange={formik.handleChange} className="" />
+            </div>
+          </div>
+
+          <Button htmlType="submit" loading={loading} className="flex self-end bg-blue-600 text-white font-bold">
+            Enregistrer
           </Button>
-        </form>
-      </div>
+
+        </div>
+
+      </form>
     </main>
   );
 }

@@ -10,7 +10,8 @@ import { useRouter } from "next/navigation";
 import Swal from 'sweetalert2'
 import ExportDialog from "@/app/(pages)/components/ExportDialog";
 import {useEffect, useRef, useState} from "react";
-import { searchFuction } from "@/lib/utils";
+import { searchFunction } from "@/lib/utils";
+import HeadList from "@/app/(pages)/components/HeadList";
 
 interface DataType {
   key: string;
@@ -135,24 +136,7 @@ export default function Employees() {
   return (
     <div className="flex flex-col gap-5">
       {/** head */}
-      <div className="flex justify-between content-between w-full items-center">
-        <div>
-          <h1 className="md:text-3xl text-xl font-bold">Liste des employés (0)</h1>
-          <p className="text-gray-600 text-[13px] ">Employees mangement</p>
-        </div>
-
-        <Button
-          size={"sm"}
-          className="bg-blue-600 flex space-x-2"
-          onClick={() => {
-            router.push('/add_employees')
-          }}
-        >
-          <h1>Ajouté un Employer</h1>
-          <UserPlus />
-
-        </Button>
-      </div>
+      <HeadList title={"Liste des employés "} subtitle={"Employees mangement"} link={"/add_employees"} buttonTitle={"Ajouté un Employer"} count={0} />
 
 
       {/** saparator */}

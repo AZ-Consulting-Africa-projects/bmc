@@ -27,7 +27,15 @@ export async function POST(req: Request) {
 
 export async function GET() {
     try {
-        const users = await prismadb.user.findMany();
+        const users = await prismadb.user.findMany({
+            orderBy: {
+                id: 'asc'
+            },
+            where: {
+                isActived: true,
+                isVisible: true
+              },
+        });
         return NextResponse.json(users);
     } catch (error) {
         console.error('[getUsers]', error);

@@ -27,9 +27,6 @@ export async function POST(req: Request) {
 export async function GET() {
     try {
         const departement = await prismadb.departement.findMany({
-            orderBy: {
-                id: 'desc'
-            },
             where: {
                 isActived: true,
                 isVisible: true

@@ -8,80 +8,97 @@ import { Button, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import type { RadioChangeEvent } from 'antd';
 import { Radio } from 'antd';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageUpload from "@/components/ImageUpload";
 import { useToast } from "@/components/ui/use-toast";
 import { UserModel } from "@/models/UserModel";
 import { Select } from 'antd';
 import type { SelectProps } from 'antd';
+import HeadDetaill from "@/app/(pages)/components/HeadDetail";
+import { Api } from "@/app/api/Api";
+import { AttendanceModel } from "@/models/AttendanceModel";
+
+const initialOptions: SelectProps['options'] = undefined;
 
 export default function AddAttendance() {
     const router = useRouter();
     const [value, setValue] = useState("");
-    const [image, setImage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const { toast } = useToast();
-    const onChange = (e: RadioChangeEvent) => {
-        console.log('radio checked', e.target.value);
-        setValue(e.target.value);
-    };
+    const [user, setUser] = useState<SelectProps['options']>(initialOptions)
+
+    useEffect(() => {
+        Api.read('/api/user').then((value: any[]) => {
+            const newdep: SelectProps['options'] = [];
+            value.forEach((element: UserModel) => {
+                newdep.push({
+                    value: String(element.id),
+                    label: String(element.firstName),
+                })
+            })
+            setUser(newdep);
+        })
+
+    }, []);
+
 
     const formik = useFormik({
         initialValues: {
-            name: "",
+            userId: "",
             date: "",
             inTime: "",
             outTime: "",
             status: ""
         },
         validationSchema: Yup.object({
-            name: Yup.string().required("Required"),
+            userId: Yup.string().required("Required"),
             date: Yup.string().required("Required"),
             inTime: Yup.string().required("Required"),
             outTime: Yup.string().required("Required"),
             status: Yup.string().required("Required"),
         }),
         onSubmit: async (values) => {
-            console.log(values)
+            console.log(values);
+            const attendanceModel = new AttendanceModel(Number(values.userId), values.date, values.inTime, values.outTime, values.status);
+            const resp = await Api.create('/api/attendance', attendanceModel);
+            if (resp.ok) {
+                toast({
+                    title: "presence ajouté avec succès",
+                });
+                formik.setValues({
+                    userId: "",
+                    date: "",
+                    inTime: "",
+                    outTime: "",
+                    status: "",
+                });
+                setIsLoading(false);
+            } else {
+                console.log(resp.msg);
+                toast({
+                    title: "Une erreur s'est produit lors de l'ajout",
+                    variant: "destructive"
+                });
+                formik.setValues({
+                    userId: "",
+                    date: "",
+                    inTime: "",
+                    outTime: "",
+                    status: "",
+                });
+                setIsLoading(false);
+            }
         }
     })
 
-    const options: SelectProps['options'] = [];
-
-    for (let i = 10; i < 36; i++) {
-        options.push({
-            value: i.toString(36) + i,
-            label: i.toString(36) + i,
-        });
-    }
-
-    const handleChange = (value: string) => {
-        console.log(`selected ${value}`);
-    };
 
     return (
         <div className='flex flex-col space-y-10 mb-10'>
 
             {/** head */}
-            <div className="flex justify-between content-between w-full items-center">
-                <div>
-                    <h1 className="md:text-3xl text-xl font-bold">Ajouter une presence</h1>
-                    <p className="text-gray-600 text-[13px] ">Employees mangement</p>
-                </div>
+            <HeadDetaill title={"Ajouter une présence"} subtitle={"user mangement"} />
 
-                <Button
-                    size={"small"}
-                    className="bg-blue-600 flex space-x-2 text-white p-2"
-                    onClick={() => {
-                        router.push('/attendance')
-                    }}
-                >
-
-                    <ArrowLeft />
-
-                </Button>
-            </div>
 
             {/** saparator */}
             <Separator className="w-full" />
@@ -92,17 +109,20 @@ export default function AddAttendance() {
                     {/**last name */}
                     <div className="flex gap-1">
                         <div className="w-full flex flex-col">
-                            <label className={formik.touched.name && formik.errors.name ? "text-red-600" :  "text-gray-600 "}>
+                            <label className={formik.touched.userId && formik.errors.userId ? "text-red-600" : "text-gray-600 "}>
 
-                                {formik.touched.name && formik.errors.name ? formik.errors.name : "Nom de l'employé" }
+                                {formik.touched.userId && formik.errors.userId ? formik.errors.userId : "Nom de l'employé"}
                                 <span className="text-red-600">*</span>
                             </label>
 
                             <Select
-                                mode="tags"
+
                                 style={{ width: '100%' }}
-                                onChange={handleChange}
-                                options={options}
+                                onChange={(value: any) => {
+                                    formik.values.userId = value;
+
+                                }}
+                                options={user as { label: string; value: string; }[]}
                                 className=" md:w-[200px] "
                             />
 
@@ -110,7 +130,7 @@ export default function AddAttendance() {
 
                         <div className="w-full flex flex-col">
                             <label className={formik.touched.date && formik.errors.date ? "text-red-600 " : "text-gray-600 "}>
-                                {formik.touched.date && formik.errors.date ? formik.errors.date : "Date de l'arrivée"}
+                                {formik.touched.date && formik.errors.date ? formik.errors.date : "Date"}
                                 <span className="text-red-600">*</span>
                             </label>
 
@@ -139,7 +159,7 @@ export default function AddAttendance() {
                     <div className="w-full flex flex-col">
                         <label className={formik.touched.outTime && formik.errors.outTime ? "text-red-600" : "text-gray-600 "}>
                             {formik.touched.outTime && formik.errors.outTime ? formik.errors.outTime : "Heure de dépare"}
-                            
+
                             <span className="text-red-600">*</span>
                         </label>
 
@@ -152,20 +172,38 @@ export default function AddAttendance() {
 
                     {/** status */}
                     <div className="w-full flex flex-col">
-                        <label className={formik.touched.status && formik.errors.status ? "text-red-600" :"text-gray-600 "}>
+                        <label className={formik.touched.status && formik.errors.status ? "text-red-600" : "text-gray-600 "}>
                             {formik.touched.status && formik.errors.status ? formik.errors.status : "Status"}
-                            
+
                             <span className="text-red-600">*</span>
                         </label>
 
                         <Select
-                            mode="tags"
                             style={{ width: '100%' }}
-                            onChange={handleChange}
-                            options={options}
+                            onChange={(value) => {
+                                formik.values.status = value;
+                            }}
                             className=" md:w-full "
+                            options={
+                                [
+                                    {
+                                        value: 'PRESENT',
+                                        label: 'Present',
+                                    },
+                                    {
+                                        value: 'ABSENT',
+                                        label: 'Absent',
+                                    },
+
+                                    {
+                                        value: 'LATE',
+                                        label: 'En retard',
+                                    },
+                                ]
+                            }
+
                         />
-                        
+
                     </div>
 
                     {/** button */}
@@ -175,7 +213,7 @@ export default function AddAttendance() {
                         <Button danger htmlType="button"
                             onClick={() => {
 
-                                setImage("");
+
                                 setValue("")
 
                             }}

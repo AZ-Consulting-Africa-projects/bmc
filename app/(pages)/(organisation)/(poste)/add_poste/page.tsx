@@ -1,5 +1,4 @@
 "use client"
-
 import HeadDetaill from "@/app/(pages)/components/HeadDetail";
 import { Separator } from "@/components/ui/separator";
 import { Button, Input, SelectProps } from "antd";
@@ -17,6 +16,8 @@ export default function AddPost() {
     const [isLoading, setIsLoading] = useState(false);
     const [depart, setDepart] = useState<SelectProps['options']>(initialOptions);
     const { toast } = useToast();
+
+    
     useEffect(() => {
         Api.read('/api/departement').then((value: any[]) => {
             const newdep: SelectProps['options'] = [];
@@ -33,7 +34,7 @@ export default function AddPost() {
 
 
     const handleChange = (value: string) => {
-        console.log(`selected ${value}`);
+     
         formik.values.departementId = value;
     };
 
@@ -50,9 +51,8 @@ export default function AddPost() {
         }),
         onSubmit: async (values) => {
             setIsLoading(true);
-            console.log(values);
             const posteModel = new PostModel(values.posteName, +values.departementId, values.description, true, true);
-            console.log(posteModel);
+            
             const resp = await Api.create('/api/poste', posteModel);
             if (resp.ok) {
                 toast({

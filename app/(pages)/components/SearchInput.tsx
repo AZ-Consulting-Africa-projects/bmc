@@ -23,7 +23,7 @@ const SearchInput = ({query, setQuery, data, setResults, palceholder, element}: 
                         value={query}
                         onChange={(e) => searchFunction(setQuery, data, element, setResults, e)}
                     />
-                    <Search className="text-blue-600" />
+                    {/*<Search className="text-blue-600" />*/}
                 </div>
 
             </div>

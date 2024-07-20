@@ -28,7 +28,6 @@ export default function Poste() {
     const [data, setData] = useState<PostModel[]>([]);
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<PostModel[]>([]);
-    
     const router = useRouter();
 
 

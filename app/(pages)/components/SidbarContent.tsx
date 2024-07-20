@@ -36,24 +36,25 @@ const SidbarContent = () => {
 
             <div className="flex h-screen flex-col justify-between content-between">
                 {/** links */}
-                <div className="flex flex-col gap-3">
-                    <Link href="" className="flex space-x-3" >
+                <div className="flex flex-col gap-5">
+
+                    <Link href="" className="flex space-x-3 hover:font-bold hover:text-blue-600 hover:scale-105 items-center" >
                         <LayoutDashboard className={pathname == "/dashboard" ? "text-blue-600" : ""} />
                         <h1 className={pathname == "/dashboard" ? "font-bold" : ""}>Dashboard</h1>
                     </Link>
                     
                      {/** Organistion*/}
-                     <div className="flex space-x-3 " >
-                        <div className="mt-3">
-                            <Building2 className={pathname == "/poste" || pathname == "/poste" ? "text-blue-600 flex self-start" : "flex self-start"} />
+                     <div className="flex space-x-3  " >
+                        <div className="mt-3 hover:font-bold hover:text-blue-600 hover:scale-105">
+                            <Building2 className={pathname == "/departement" || pathname == "/poste" ? "text-blue-600 flex self-start" : "flex self-start"} />
                         </div>
                         
                         <Accordion type="single" collapsible >
                             <AccordionItem value="item-1">
-                                <AccordionTrigger className={pathname == "/departement" || pathname == "/poste" ? "font-bold flex" :  "flex "}>Organisation</AccordionTrigger>
+                                <AccordionTrigger className={pathname == "/departement" || pathname == "/poste" ? "font-bold flex" :  "flex hover:font-bold hover:text-blue-600 hover:scale-105 "}>Organisation</AccordionTrigger>
                                 <AccordionContent className="flex flex-col space-y-3">
-                                    <Link className={pathname == "/departement" ? "font-bold text-blue-600" : ""} href="/departement">Departement</Link>
-                                     <Link className={pathname == "/poste" ? "font-bold text-blue-600" : ""} href="/poste">Poste</Link>
+                                    <Link className={pathname == "/departement" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/departement">Departement</Link>
+                                     <Link className={pathname == "/poste" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/poste">Poste</Link>
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
@@ -62,18 +63,18 @@ const SidbarContent = () => {
                     {/** resource humain */}
                     <div className="flex space-x-3 " >
                         <div className="mt-3">
-                            <Users className={pathname == "/employees" || pathname == "/attendance" ? "text-blue-600 flex self-start" : "flex self-start"} />
+                            <Users className={pathname == "/employees" || pathname == "/attendance" ? "text-blue-600 flex self-start" : "flex self-start hover:font-bold hover:text-blue-600 hover:scale-105"} />
                         </div>
                         
                         <Accordion type="single" collapsible >
                             <AccordionItem value="item-1">
-                                <AccordionTrigger className={pathname == "/employees" || pathname == "/attendance" ? "font-bold flex" :  "flex "}>RH</AccordionTrigger>
+                                <AccordionTrigger className={pathname == "/employees" || pathname == "/attendance" ? "font-bold flex" :  "flex hover:font-bold hover:text-blue-600 hover:scale-105 "}>RH</AccordionTrigger>
                                 <AccordionContent className="flex flex-col space-y-3">
-                                    <Link className={pathname == "/employees" ? "font-bold text-blue-600" : ""} href="/employees">Employer</Link>
-                                     <Link className={pathname == "/attendance" ? "font-bold text-blue-600" : ""} href="/attendance">Presences</Link>
-                                    <Link className={pathname == "/recrutement" ? "font-bold text-blue-600" : ""} href="/recrutement">Recrutements</Link>
-                                    <Link className={pathname == "/conge" ? "font-bold text-blue-600" : ""} href="/conge">Congé</Link>
-                                    <Link className={pathname == "/formation" ? "font-bold text-blue-600" : ""} href="/formation">Formations</Link>
+                                    <Link className={pathname == "/employees" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/employees">Employer</Link>
+                                     <Link className={pathname == "/attendance" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/attendance">Presences</Link>
+                                    <Link className={pathname == "/recrutement" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/recrutement">Recrutements</Link>
+                                    <Link className={pathname == "/conge" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/conge">Congé</Link>
+                                    <Link className={pathname == "/formation" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/formation">Formations</Link>
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
@@ -81,38 +82,31 @@ const SidbarContent = () => {
 
 
                     {/** visiteuz */}
-                    <div className="flex space-x-3 " >
-                        <div className="mt-3">
-                            <ContactRound className={pathname == "" || pathname == "" ? "text-blue-600 flex self-start" : "flex self-start"} />
+                    <div className="flex space-x-3 hover:font-bold hover:text-blue-600 hover:scale-105 items-center" >
+
+                        <div className="">
+                            <ContactRound className={pathname == "/visitor"  ? "text-blue-600 flex self-start" : "flex self-start"} />
                         </div>
+                        <Link className={pathname == "/visitor" ? "font-bold text-blue-600" : ""} href="/visitor">Visiteur</Link>
                         
-                        <Accordion type="single" collapsible >
-                            <AccordionItem value="item-1">
-                                <AccordionTrigger className={pathname == "/employees" || pathname == "" ? "font-bold flex" :  "flex "}> Visiteurs</AccordionTrigger>
-                                <AccordionContent className="flex flex-col space-y-3">
-            
-                                    <Link className={pathname == "/employees" ? "font-bold text-blue-600" : ""} href="/employees">Employer</Link>
-                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Visiteurs</Link>
-                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Recrutements</Link>
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
+                        
                     </div>
 
                     {/** commercial */}
                     <div className="flex space-x-3 " >
                         <div className="mt-3">
-                            <ShoppingBag className={pathname == "" || pathname == "" ? "text-blue-600 flex self-start" : "flex self-start"} />
+                            <ShoppingBag className={pathname == "/customer" || pathname == "/sale" || pathname == "/quote" || pathname == "/sale_report" ? "text-blue-600 flex self-start" : "flex self-starthover:font-bold hover:text-blue-600 hover:scale-105"} />
                         </div>
                         
                         <Accordion type="single" collapsible >
                             <AccordionItem value="item-1">
-                                <AccordionTrigger className={pathname == "/employees" || pathname == "" ? "font-bold flex" :  "flex "}> Commercial</AccordionTrigger>
+                                <AccordionTrigger className={pathname == "/customer" || pathname == "/sale" || pathname == "/quote" || pathname == "/sale_report" ? "font-bold flex" :  "flex hover:font-bold hover:text-blue-600 hover:scale-105"}>Département Commercial</AccordionTrigger>
                                 <AccordionContent className="flex flex-col space-y-3">
             
-                                    <Link className={pathname == "/employees" ? "font-bold text-blue-600" : ""} href="/employees">Employer</Link>
-                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Visiteurs</Link>
-                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Recrutements</Link>
+                                    <Link className={pathname == "/customer" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/customer">Clients</Link>
+                                    <Link className={pathname == "/sale" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/sale">Opportunité de vente</Link>
+                                    <Link className={pathname == "/quote" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/quote">devis/facture</Link>
+                                    <Link className={pathname == "/sale_report" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/sale_report">Rapports de Ventes</Link>
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
@@ -120,19 +114,20 @@ const SidbarContent = () => {
 
 
                     {/** comptabilité */}
-                    <div className="flex space-x-3 " >
+                    <div className="flex space-x-3 hover:font-bold hover:text-blue-600 hover:scale-105 " >
                         <div className="mt-3">
-                            <BadgeDollarSign className={pathname == "/" || pathname == "" ? "text-blue-600 flex self-start" : "flex self-start"} />
+                            <BadgeDollarSign className={pathname == "/transaction" || pathname == "/invoice" || pathname == "/budget" ? "text-blue-600 flex self-start" : "flex self-start hover:font-bold hover:text-blue-600 hover:scale-105"} />
                         </div>
                         
                         <Accordion type="single" collapsible >
                             <AccordionItem value="item-1">
-                                <AccordionTrigger className={pathname == "/employees" || pathname == "" ? "font-bold flex" :  "flex "}>Comptabilité</AccordionTrigger>
+                                <AccordionTrigger className={pathname == "/transaction" || pathname == "/invoice" || pathname == "/budget" ? "font-bold flex" :  "flex  hover:font-bold hover:text-blue-600 hover:scale-105"}>Comptabilité</AccordionTrigger>
                                 <AccordionContent className="flex flex-col space-y-3">
             
-                                    <Link className={pathname == "/employees" ? "font-bold text-blue-600" : ""} href="/employees">Employer</Link>
-                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Visiteurs</Link>
-                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : ""} href="/">Recrutements</Link>
+                                    <Link className={pathname == "/transaction" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/transaction">Transactions Financières</Link>
+                                    <Link className={pathname == "/invoice" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/invoice">Factures</Link>
+                                    <Link className={pathname == "/budget" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/budget">Budgétisation</Link>
+                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/">Rapports Financiers</Link>
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
@@ -143,12 +138,12 @@ const SidbarContent = () => {
 
                 {/** frams */}
                 <div className="flex flex-col gap-5">
-                <Link href="" className="flex space-x-3" >
-                        <Settings className={pathname == "/dashboard" ? "text-blue-600" : ""} />
-                        <h1 className={pathname == "/dashboard" ? "font-bold" : ""}>Parametre</h1>
+                <Link href="/settings" className="flex items-center space-x-3 hover:font-bold hover:text-blue-600 hover:scale-105" >
+                        <Settings className={pathname == "/settings" ? "text-blue-600" : ""} />
+                        <h1 className={pathname == "/settings" ? "font-bold" : ""}>Parametre</h1>
                     </Link>
 
-                    <Link href="" className="flex space-x-3" >
+                    <Link href="#" className="flex space-x-3 hover:font-bold hover:text-blue-600 hover:scale-105" >
                         <h1 className="text-sm font-bold text-center">Suport d'aide</h1>
                     </Link>
 

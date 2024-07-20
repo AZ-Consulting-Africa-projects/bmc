@@ -4,166 +4,198 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Search, FolderDown, UserPlus, Trash2 } from "lucide-react";
-import { Space, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
 import { useRouter } from "next/navigation";
 import Swal from 'sweetalert2'
 import ExportDialog from "@/app/(pages)/components/ExportDialog";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import { searchFunction } from "@/lib/utils";
 import HeadList from "@/app/(pages)/components/HeadList";
+import { UserModel } from "@/models/UserModel";
+import { Api } from "@/app/api/Api";
+import SearchInput from "@/app/(pages)/components/SearchInput";
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+import { MenuTable } from "@/app/(pages)/components/MenuTable";
+import { DepartementModel } from "@/models/DepartementModel";
+import { DropdownMenuGroup, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import Image from "next/image";
 
 interface DataType {
-  key: string;
-  name: string;
-  poste: string;
-  phone: number;
-  address: string;
-  role: string;
+    key: string;
+    name: string;
+    poste: string;
+    phone: number;
+    address: string;
+    role: string;
 }
 
 
 export default function Employees() {
-  const router = useRouter();
-  const refPdf: any = useRef();
-  const [query, setQuery] = useState('');
+    const router = useRouter();
+    const refPdf: any = useRef();
+    const [query, setQuery] = useState('');
     const [results, setResults] = useState<any[]>([]);
+    const [data, setData] = useState<UserModel[]>([]);
+
+    useEffect(() => {
+        Api.read('/api/user').then((value) => {
+            setData(value);
+        })
+    }, []);
+
+    //tableau
+
+    const tableConstruction = (data: UserModel[]) => {
+        return data.map((items) => (
+            <TableRow key={items.id}>
+                <TableCell className="font-medium">
+                    <Image src={String(items.imageUrl)} alt="" width={80} height={80} className="rounded-full " />
+
+                </TableCell>
+
+                <TableCell className="font-medium">{items.firstName} {items.lastName}</TableCell>
+                <TableCell className="font-medium">{items.departement}</TableCell>
+                <TableCell className="font-medium">{items.phone}</TableCell>
+                <TableCell className="font-medium">{items.position}</TableCell>
+                <TableCell className="font-medium">{items.role}</TableCell>
+
+                {/*actions*/}
+                <TableCell className="text-right">
+                    <MenuTable childrens={
+
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem>
+                                <Button variant={"outline"}
+                                    size={"sm"}
+                                    onClick={() => {
+                                        router.push(`/edit_employees/${items.id}`)
+                                    }}
+                                    className={'self-center w-full'}
+                                >
+                                    Editer
+                                </Button>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuItem>
+                                {/** delate button */}
+                                <Button type="button"
+                                    variant={'destructive'}
+                                    size={'sm'}
+                                    onClick={() => {
+                                        Swal.fire({
+                                            title: "supression",
+                                            text: `Voulez-vous suprimer l employer ${items.firstName} ?`,
+                                            icon: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#3085d6",
+                                            cancelButtonColor: "#d33",
+                                            confirmButtonText: "Suprimer"
+                                        }).then(async (result) => {
+                                            if (result.isConfirmed) {
+                                                const userModel = new UserModel(items.email, items.firstName, items.lastName, items.phone, items.departement, items.position, items.role, items.password, false, false, items.hire_date, items.imageUrl, items.salary, items.id);
+
+                                                const resp = await Api.update(`/api/user/${items.id}`, userModel)
+                                                if (resp.ok) {
+                                                    Swal.fire({
+                                                        title: "Suprimé!",
+                                                        text: "Votre supression a été effectuer.",
+                                                        icon: "success"
+                                                    });
+
+                                                    setData(data.filter((item) => item.id !== items.id));
+                                                    setResults(results.filter((item) => item.id !== items.id));
+                                                    router.refresh();
+                                                } else {
+                                                    Swal.fire({
+                                                        title: "Erreur",
+                                                        text: "Votre supression a échoué.",
+                                                        icon: "error"
+                                                    });
+                                                }
 
 
-  const columns: TableProps<DataType>['columns'] = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: 'Poste',
-      dataIndex: 'poste',
-      key: 'poste',
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: 'Téléphone',
-      dataIndex: 'phone',
-      key: 'phone',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: 'Rôle',
-      key: 'role',
-      dataIndex: 'role',
-      render: (_, { role }) => (
-        <div>
-          {
-            role == "ADMIN" ?
-              <Tag color={"red"} key={role}>
-                {role.toUpperCase()}
-              </Tag> : <Tag color={"blue"} key={role}>
-                {role.toUpperCase()}
-              </Tag>
 
-          }
+                                            }
+                                        });
+
+                                    }}
+
+                                >
+                                    Suprimer
+                                </Button>
+
+                            </DropdownMenuItem>
+
+                        </DropdownMenuGroup>
+
+
+                    } />
+                </TableCell>
+            </TableRow>
+        ))
+
+    }
+
+
+    return (
+        <div className="flex flex-col gap-5">
+            {/** head */}
+            <HeadList title={"Liste des employés "} subtitle={"Gestion des employés"} link={"/add_employees"} buttonTitle={"Ajouté un Employer"} count={data.length} />
+
+
+            {/** saparator */}
+            <Separator className="w-full" />
+
+
+            {/** searche input */}
+            <div className="grid grid-cols-1 md:grid-cols-2">
+                <SearchInput query={query} setQuery={setQuery} data={data} element="firstName" setResults={setResults} palceholder={"Trouver un employé par le nom"} />
+            </div>
+
+
+
+
+            {/*table*/}
+            <div className="flex flex-col space-y-3 ">
+                <div className="w-auto">
+                    <ExportDialog data={data} />
+                </div>
+
+
+                <Table>
+                    <TableCaption>Liste des départements.</TableCaption>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="">Profil</TableHead>
+                            <TableHead className="">Nom prenom</TableHead>
+                            <TableHead className="">Poste</TableHead>
+                            <TableHead className="">Télépone</TableHead>
+                            <TableHead className="">Adresse</TableHead>
+                            <TableHead className="">Rôle</TableHead>
+
+                            <TableHead className="text-right">Action</TableHead>
+                        </TableRow>
+                    </TableHeader>
+
+                    <TableBody>
+                        {
+                            query == '' ? tableConstruction(data) : tableConstruction(results)
+                        }
+                    </TableBody>
+                    <TableFooter>
+
+                    </TableFooter>
+                </Table>
+            </div>/
         </div>
-      ),
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <Button onClick={() => {
-            router.push(`/edit_employees/${record.key}`)
-          }} size={"sm"} variant="outline">Editer</Button>
-
-          <Button size={"sm"} variant="destructive" onClick={() => {
-            Swal.fire({
-              title: "Are you sure?",
-              text: "You won't be able to revert this!",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-              if (result.isConfirmed) {
-                Swal.fire({
-                  title: "Deleted!",
-                  text: "Your file has been deleted.",
-                  icon: "success"
-                });
-              }
-            });
-          }}>
-            <Trash2 />
-          </Button>
-        </Space>
-      ),
-    },
-  ];
-
-  const data: DataType[] = [
-    {
-      key: '1',
-      name: 'John Brown',
-      poste: 'DG',
-      phone: 32,
-      address: 'New York No. 1 Lake Park',
-      role: "ADMIN",
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      poste: 'RH',
-      phone: 42,
-      address: 'London No. 1 Lake Park',
-      role: "EMPLOYEE",
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      poste: 'DIRECTEUR BI',
-      phone: 32,
-      address: 'Sydney No. 1 Lake Park',
-      role: "ADMIN",
-    },
-  ];
-
-  return (
-    <div className="flex flex-col gap-5">
-      {/** head */}
-      <HeadList title={"Liste des employés "} subtitle={"Employees mangement"} link={"/add_employees"} buttonTitle={"Ajouté un Employer"} count={0} />
-
-
-      {/** saparator */}
-      <Separator className="w-full" />
-
-
-      {/** searche input */}
-      <div className="flex items-center justify-center my-5">
-        <div className="flex space-x-3 items-center">
-          <Input className="md:w-[300px] w-[250px] " placeholder="Trouver un employé" />
-          <Search className="text-blue-600" />
-        </div>
-
-      </div>
-
-
-      {/** Tables */}
-      <div className="flex flex-col space-y-3 ">
-        <div className="flex space-x-5 ">
-          <Button size={"sm"} className="">
-            Recharger
-          </Button>
-
-          <ExportDialog data={data} refTable={refPdf} idTable={"table"} />
-        </div>
-         <Table ref={refPdf} id="table" columns={columns} dataSource={data} />
-      </div>
-    </div>
-  );
+    );
 }

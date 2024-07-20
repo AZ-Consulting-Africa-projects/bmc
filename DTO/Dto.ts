@@ -76,6 +76,7 @@ export class Dto {
             date: Joi.string().required(),
             inTime: Joi.string().required(),
             outTime: Joi.string().required(),
+            status: Joi.string().required(),
             userId: Joi.number().required(),
             id: Joi.number().optional(),
         });
@@ -84,15 +85,33 @@ export class Dto {
 
     static recrutementDto() {
         const schema = Joi.object({
-            id: Joi.number().optional(),
-            email: Joi.string().email().required(),
-            firstName: Joi.string().required(),
-            lastName: Joi.string().required(),
-            phone: Joi.number().required(),
-            post: Joi.string().required(),
-            position: Joi.string().required(),
-            documents: Joi.string().required(),
+            title: Joi.string().required(),
+            poste: Joi.string().required(),
+            description: Joi.string().required(),
+            responsability: Joi.string().required(),
+            requirement: Joi.string().required(),
+            location: Joi.string().required(),
+            salary: Joi.number().required(),
+            posting_date: Joi.string().required(),
+            closing_date: Joi.string().required(),
             status: Joi.string().required(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional(),
+            id: Joi.number().optional(),
+        });
+
+        return schema;
+    }
+
+    static userRecrutementDto() {
+        const schema = Joi.object({
+            userId: Joi.number().required(),
+            recrutementId: Joi.number().required(),
+            cv: Joi.string().required(),
+            lettre: Joi.string().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional(),
+            id: Joi.number().optional(),
         });
 
         return schema;
@@ -110,4 +129,151 @@ export class Dto {
 
         return schema;
     }
+
+    static leaveDto() {
+        const schema = Joi.object({
+            userId: Joi.number().required(),
+            leave_type: Joi.string().required(),
+            start_date: Joi.string().required(),
+            end_date: Joi.string().required(),
+            reason: Joi.string().required(),
+            status: Joi.string().required(),
+            request_date: Joi.string().required(),
+            approval_date: Joi.string().optional(),
+            id: Joi.number().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional()
+        });
+        return schema;
+    }
+
+    static visitorDto() {
+        const schema = Joi.object({
+            name: Joi.string().required(),
+            company: Joi.string().required(),
+            purpose_of_visit: Joi.string().required(),
+            arrival_date: Joi.string().required(),
+            arrival_time: Joi.string().required(),
+            departure_date: Joi.string().required(),
+            person_to_meet: Joi.string().required(),
+            status: Joi.string().required(),
+            visitor_id_card: Joi.string().required(),
+            id: Joi.number().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional()
+        });
+        return schema;
+    }
+
+    static invoiceDto() {
+        const schema = Joi.object({
+            date: Joi.string().required(),
+            amount: Joi.number().required(),
+            userId: Joi.number().required(),
+            due_date: Joi.string().required(),
+            status: Joi.string().required(),
+            description: Joi.string().required(),
+            id: Joi.number().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional()
+        });
+        return schema;
+    }
+
+    static transactionDto() {
+        const schema = Joi.object({
+            date: Joi.string().required(),
+            amount: Joi.number().required(),
+            type: Joi.string().required(),
+            category: Joi.string().required(),
+            status: Joi.string().required(),
+            description: Joi.string().required(),
+            id: Joi.number().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional()
+        });
+        return schema;
+    }
+
+    static budgetDto() {
+        const schema = Joi.object({
+            departementId: Joi.number().required(),
+            budget_allocated: Joi.number().required(),
+            budget_spent: Joi.number().required(),
+            budget_remaining: Joi.number().required(),
+            period: Joi.string().required(),
+            description: Joi.string().required(),            
+            id: Joi.number().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional()        
+        });
+        return schema;
+       
+    }
+
+    static customerDto() {
+        const schema = Joi.object({
+            name: Joi.string().required(),
+            company: Joi.string().required(),
+            phone: Joi.number().required(),
+            email: Joi.string().email().required(),
+            address: Joi.string().required(),
+            status: Joi.string().required(),
+            id: Joi.number().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional()
+        });
+        return schema;
+    }
+
+    static saleDto() {
+        const schema = Joi.object({
+            name: Joi.string().required(),
+            costomerId: Joi.number().required(),
+            stage: Joi.string().required(),
+            estimated_amount: Joi.number().required(),
+            close_date: Joi.string().required(),
+            description: Joi.string().required(),
+            status: Joi.string().required(),
+            id: Joi.number().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional()
+        });
+
+        return schema;
+    }
+
+    static quoteDto() {
+        const schema = Joi.object({
+            type: Joi.string().required(),
+            customerId: Joi.number().required(),
+            date_issued: Joi.string().required(),
+            amount: Joi.number().required(),
+            description: Joi.string().required(),
+            status: Joi.string().required(),
+            id: Joi.number().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional()
+        });
+
+        return schema;
+    }
+
+    static salereportDto() {
+        const schema = Joi.object({
+            report_type: Joi.string().required(),
+            start_date: Joi.string().required(),
+            end_date: Joi.string().required(),
+            total_revenue: Joi.number().required(),
+            total_opportunities: Joi.number().required(),
+            conversion_rate: Joi.number().required(),
+            id: Joi.number().optional(),
+            isVisible: Joi.boolean().optional(),
+            isActived: Joi.boolean().optional()
+        });
+
+        return schema
+    }
+
+    
 }

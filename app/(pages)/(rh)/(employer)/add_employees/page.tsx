@@ -6,27 +6,61 @@ import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { ArrowLeft } from "lucide-react";
-import { Button, Input } from "antd";
+import { Button, Input, Select } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import type { RadioChangeEvent } from 'antd';
+import type { RadioChangeEvent, SelectProps } from 'antd';
 import { Radio } from 'antd';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageUpload from "@/components/ImageUpload";
 import { useToast } from "@/components/ui/use-toast";
 import { UserModel } from "@/models/UserModel";
+import { Api } from "@/app/api/Api";
+import { DepartementModel } from "@/models/DepartementModel";
+import { PostModel } from "@/models/PosteModel";
+import HeadDetaill from "@/app/(pages)/components/HeadDetail";
 
+const initialOptions: SelectProps['options'] = undefined;
 
-export default function AddEmloyees() {
+export default function AddEmployees() {
     const router = useRouter();
     const [value, setValue] = useState("");
     const [image, setImage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const { toast } = useToast();
+    const [depart, setDepart] = useState<SelectProps['options']>(initialOptions);
+    const [poste, setPoste] = useState<SelectProps['options']>(initialOptions);
+
+
+    useEffect(() => {
+        
+
+        Api.read('/api/poste').then((value: any[]) => {
+            const newdep: SelectProps['options'] = [];
+            value.forEach((element: PostModel) => {
+                newdep.push({
+                    value: String(element.posteName),
+                    label: String(element.posteName),
+                })
+            })
+            setPoste(newdep);
+        })
+
+    }, []);
+
+
+
     const onChange = (e: RadioChangeEvent) => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
     };
+
+    const handleChangeDepart = (value: string) => {
+        console.log(`selected ${value}`);
+        formik.values.departement = value;
+    };
+
+   
 
     const formik = useFormik({
         initialValues: {
@@ -46,9 +80,9 @@ export default function AddEmloyees() {
             lastName: Yup.string().required("Le prénom est obligatoire"),
             email: Yup.string().email("Email invalide").required("L'email est obligatoire"),
             phone: Yup.string().required("Le numéro de téléphone est obligatoire"),
-            position: Yup.string().required("La position est obligatoire"),
+            position: Yup.string().required("L'adresse est obligatoire"),
             hire_date: Yup.string().optional(),
-            departement: Yup.string().required("Le departement est obligatoire"),
+            departement: Yup.string().required("Le poste est obligatoire"),
             salary: Yup.number().required("Le salaire est obligatoire"),
             password: Yup.string().optional(),
             password2: Yup.string().optional(),
@@ -58,24 +92,55 @@ export default function AddEmloyees() {
             setIsLoading(true);
             if (value != "") {
                 const userModel = new UserModel(values.email, values.firstName, values.lastName, Number(values.phone), values.departement, values.position, value, values.password, true, true, String(values.hire_date), String(image), Number(values.salary));
-                console.log(userModel);
-                toast({
-                    title: "Employé ajouté avec succès",
-                })
+                const resp= await Api.create("/api/user", userModel);
+                if (resp.ok ) {
+                    
+                    toast({
+                      title: "Informations enrégistrés avec succès."
+                    });
+                    
+                    formik.setValues({
+                        firstName: "",
+                        lastName: "",
+                        email: "",
+                        phone: "",
+                        position: "",
+                        hire_date: "",
+                        departement: "",
+                        salary: "",
+                        password: "",
+                        password2: "",
+                    });
+                    setImage("");
+                    setValue("")
+                    setIsLoading(false);
+
+                  } else {
+                    toast({
+                      title: "Une erreur s'est produite",
+                      description: "Réessayer!!",
+                      variant: "destructive"
+                    });
+                    console.error(resp.msg);
+                    
+                    setIsLoading(false);
+                    formik.setValues({
+                        firstName: "",
+                        lastName: "",
+                        email: "",
+                        phone: "",
+                        position: "",
+                        hire_date: "",
+                        departement: "",
+                        salary: "",
+                        password: "",
+                        password2: "",
+                    });;
+                  }
+                
 
                 setIsLoading(false)
-                formik.initialValues = {
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    phone: "",
-                    position: "",
-                    hire_date: "",
-                    departement: "",
-                    salary: "",
-                    password: "",
-                    password2: "",
-                }
+                
                 setImage("");
                 setValue("")
             }
@@ -95,24 +160,9 @@ export default function AddEmloyees() {
     return (
         <div className='flex flex-col space-y-10 mb-10'>
             {/** head */}
-            <div className="flex justify-between content-between w-full items-center">
-                <div>
-                    <h1 className="md:text-3xl text-xl font-bold">Ajouter un employé</h1>
-                    <p className="text-gray-600 text-[13px] ">Employees mangement</p>
-                </div>
+            <HeadDetaill title={"Ajouter un employé"} subtitle={"Gestion des Employés"} />
 
-                <Button
-                    size={"small"}
-                    className="bg-blue-600 flex space-x-2 text-white p-2"
-                    onClick={() => {
-                        router.push('/employees')
-                    }}
-                >
-
-                    <ArrowLeft />
-
-                </Button>
-            </div>
+            
 
             {/** saparator */}
             <Separator className="w-full" />
@@ -181,7 +231,7 @@ export default function AddEmloyees() {
                     <div className="flex gap-3">
 
                         {/**mail */}
-                        <div className="w-full">
+                        <div className="w-full flex flex-col">
                             <label className={formik.touched.email && formik.errors.email ? "text-red-600" : "text-gray-600 "}>
                                 {formik.touched.email && formik.errors.email ? formik.errors.email : "Email"}
                                 <span className="text-red-600">*</span>
@@ -195,7 +245,7 @@ export default function AddEmloyees() {
                         </div>
 
                         {/** phone */}
-                        <div className="w-full">
+                        <div className="w-full flex flex-col">
                             <label className={formik.touched.phone && formik.errors.phone ? "text-red-600" : "text-gray-600 "}>
                                 {formik.touched.phone && formik.errors.phone ? formik.errors.phone : "Numéro de téléphone"}
                                 <span className="text-red-600">*</span>
@@ -214,7 +264,7 @@ export default function AddEmloyees() {
                     <div className="flex gap-3">
 
                         {/**address */}
-                        <div className="w-full">
+                        <div className="w-full flex flex-col">
                             <label className={formik.touched.position && formik.errors.position ? "text-red-600" : "text-gray-600 "}>
                                 {formik.touched.position && formik.errors.position ? formik.errors.position : "Addresse"}
                                 <span className="text-red-600">*</span>
@@ -247,21 +297,23 @@ export default function AddEmloyees() {
                     <div className="flex gap-3">
 
                         {/**departement */}
-                        <div className="w-full">
+                        <div className="w-full flex flex-col">
                             <label className={formik.touched.departement && formik.errors.departement ? "text-red-600" : "text-gray-600"}>
-                                {formik.touched.departement && formik.errors.departement ? formik.errors.departement : "Département"}
+                                {formik.touched.departement && formik.errors.departement ? formik.errors.departement : "Poste"}
                                 <span className="text-red-600">*</span>
                             </label>
 
-                            <Input type="text" name="departement"
-                                className="md:w-[250px]"
-                                value={formik.values.departement}
-                                onChange={formik.handleChange}
-                            />
+                            <Select
+                            onChange={handleChangeDepart}
+                            className="md:w-[250px]"
+                            options={poste as { label: string; value: string; }[]}
+                        />
+
+                
                         </div>
 
                         {/** salary*/}
-                        <div className="w-full">
+                        <div className="w-full flex flex-col">
                             <label className={formik.touched.salary && formik.errors.salary ? "text-red-600" : "text-gray-600 "}>
                                 {formik.touched.salary && formik.errors.salary ? formik.errors.salary : "Salaire"}
                                 <span className="text-red-600">*</span>
@@ -280,7 +332,7 @@ export default function AddEmloyees() {
                     <div className="flex gap-3">
 
                         {/**password1 */}
-                        <div className="w-full">
+                        <div className="w-full flex flex-col ">
                             <label className={formik.touched.password && formik.errors.password ? "text-red-600" : "text-gray-600"}>
                                 {formik.touched.password && formik.errors.password ? formik.errors.password : "Mot de passe"}
                                 <span className="text-red-600"></span>
@@ -295,7 +347,7 @@ export default function AddEmloyees() {
                         </div>
 
                         {/** password2 */}
-                        <div className="w-full">
+                        <div className="w-full flex flex-col">
                             <label className={formik.touched.password2 && formik.errors.password2 ? "text-red-600" : "text-gray-600 "}>
                                 {formik.touched.password2 && formik.errors.password2 ? formik.errors.password2 : "Confirmer le mot de passe"}
                                 <span className="text-red-600"></span>
@@ -333,7 +385,7 @@ export default function AddEmloyees() {
 
                         <Button danger htmlType="button"
                             onClick={() => {
-                                formik.initialValues = {
+                                formik.setValues ({
                                     firstName: "",
                                     lastName: "",
                                     email: "",
@@ -344,7 +396,7 @@ export default function AddEmloyees() {
                                     salary: "",
                                     password: "",
                                     password2: "",
-                                }
+                                })
                                 setImage("");
                                 setValue("")
 

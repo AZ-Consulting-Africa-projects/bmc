@@ -13,16 +13,14 @@ import {
 import { FolderDown } from "lucide-react";
 import Image from "next/image";
 import { downloadPDF } from "@/lib/utils";
+import { ExportCSVButton, ExportExcelButton, ExportPDFButton } from "./ExportData";
 
 interface Props {
     data: any[],
-    idTable: string,
-    refTable: any,
 }
 
 const ExportDialog = ({ data,
-    idTable,
-    refTable }: Props) => {
+     }: Props) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -40,25 +38,12 @@ const ExportDialog = ({ data,
 
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
-                    <div className="flex justify-center items-center gap-4">
-                        <div onClick={() => downloadPDF(refTable)} className="w-[150px] h-[200px] rounded-md items-center justify-center flex flex-col gap-2 ">
-                            <Image src={"/image/pdf.png"} width={100} height={100} alt="" className="object-cover " />
-                            <h1>PDF</h1>
-                        </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-4">
+                        <ExportPDFButton data={data}/>
 
-                        <div className="w-[150px] h-[200px] rounded-md items-center justify-center flex flex-col gap-2 ">
-                            <Image src={"/image/exceller.png"} width={100} height={100} alt="" className="object-cover " />
-                            <h1>EXCEL</h1>
-                                                     
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-                        </div>
+                        <ExportExcelButton data={data}/>
 
-                        <div className="w-[150px] h-[200px] rounded-md items-center justify-center flex flex-col gap-2 ">
-                        <Image src={"/image/csv.png"} width={100} height={100} alt="" className="object-cover " />
-                                <h1>CSV</h1>
-                           
-
-                        </div>
+                        <ExportCSVButton data={data}/>
                     </div>
                 </div>
             </DialogContent>

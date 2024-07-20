@@ -35,6 +35,7 @@ model Departement {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   postes Poste[]
+  budgets Budget[]
 }
 
 model Poste {
@@ -47,6 +48,23 @@ model Poste {
   updatedAt DateTime @updatedAt
   deparetementId Int
   deparetement Departement @relation(fields: [deparetementId], references: [id])
+}
+
+model Visitor {
+  id    Int     @id @default(autoincrement())
+  name String
+  company String
+  purpose_of_visit String
+  arrival_date String
+  arrival_time String
+  departure_date String
+  person_to_meet String
+  status VisitorStatus
+  visitor_id_card String
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model User {
@@ -68,6 +86,9 @@ model User {
   updatedAt DateTime @updatedAt
   attendances Attendance[]
   trainingPrograms TrainingPrograms[]
+  userRecrutement UserRecrutement[]
+  leaverequest Leaverequest[]
+  invoice Invoice[]
 }
 
 model Attendance {
@@ -84,18 +105,36 @@ model Attendance {
 
 model Recrutement {
   id    Int     @id @default(autoincrement())
-  email String  @unique
-  firstName String
-  lastName  String
-  post String
-  phone Int
-  position String
-  documents String
+  title String  @unique
+  poste String
+  description  String
+  responsability String
+  requirement String
+  location String
+  salary Int
+  posting_date String
+  closing_date String
   status RecrutementStatus
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  userRecrutement UserRecrutement[]
 }
 
+model UserRecrutement {
+  id    Int     @id @default(autoincrement())
+  userId Int
+  recrutementId Int
+  cv String
+  lettre String?
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  recrutement Recrutement @relation(fields: [recrutementId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+}
 model TrainingPrograms {
   id    Int     @id @default(autoincrement())
   name String
@@ -108,10 +147,223 @@ model TrainingPrograms {
   updatedAt DateTime @updatedAt
 }
 
-enum RecrutementStatus {
+model Leaverequest {
+  id    Int     @id @default(autoincrement())
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  leave_type String
+  start_date String
+   end_date String
+  reason String
+  status LeaverequestStatus
+  request_date String
+  approval_date String?
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Financialtransaction {
+  id    Int     @id @default(autoincrement())
+  date String
+  amount Decimal
+  type TransationType
+  category String
+  status TransactionStatus
+  description String
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invoice {
+  id    Int     @id @default(autoincrement())
+  date String
+  amount Decimal
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  due_date String
+  status InvoiceStatus
+  description String
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+enum TransationType {
+  RECETTE
+  DEPENSE
+}
+
+
+
+enum TransactionStatus {
   PENDING
-  ACCEPTED
+  COMPLETED
+  FAILED
+}
+
+
+
+model Budget {
+  id    Int     @id @default(autoincrement())
+  departementId Int
+  deparetement Departement @relation(fields: [departementId], references: [id])
+  budget_allocated Decimal @default(0)
+  budget_spent Decimal @default(0)
+  budget_remaining Decimal @default(0)
+  period String
+  description String
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Financialreports {
+  id    Int     @id @default(autoincrement())
+  report_type  ReportType
+  start_date String
+  end_date String
+  generated_at String //Date et heure de génération du rapport.
+  total_revenue Decimal
+  total_expenses Decimal
+  net_profit Decimal //Bénéfice net pour la période.
+  assets Decimal //Total des actifs à la fin de la période.
+  liabilities Decimal
+  equity Decimal
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ReportType {
+  REVENUE
+  EXPENSE
+  PROFIT
+}
+
+model Customer {
+    id Int     @id @default(autoincrement())
+    name String
+    company String
+    phone Int
+    email String
+    address String
+    status CustomerStatus
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  salesopportunities Salesopportunities[]
+  quotes Quotes[]
+}
+
+model Salesopportunities {
+  id    Int     @id @default(autoincrement())
+  name String
+  customerId Int
+  customer Customer @relation(fields: [customerId], references: [id])
+  stage StageType
+  estimated_amount Int
+  close_date String
+  description String
+  status OportunityStatus
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Quotes {
+  id    Int     @id @default(autoincrement())
+  type QuoteType
+  customerId Int
+  customer Customer @relation(fields: [customerId], references: [id])
+  date_issued String
+  amount Int
+  description String
+  status QuoteStatus
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Salesreports {
+  id    Int     @id @default(autoincrement())
+  report_type SaleReportType
+  start_date String
+  end_date String
+  total_revenue Decimal
+  total_opportunities Int //Nombre total d'opportunités de vente pour la période.
+  conversion_rate Decimal //Taux de conversion des opportunités en ventes
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum SaleReportType {
+  Performance 
+  commerciale 
+  Previsions
+}
+
+enum InvoiceStatus {
+  PAID
+  UNPAID
+}
+enum QuoteStatus {
+  ACCEPT
+  REJECT
+}
+
+enum QuoteType {
+  DEVIS
+  FACTURE
+}
+enum OportunityStatus {
+  OPEN
+  CLOSE
+}
+
+enum StageType {
+  Prospection
+  Negociation
+}
+
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+  PROSPECT
+}
+
+
+
+
+enum LeaverequestStatus {
+  PENDING
+  APPROVED
   REJECTED
+}
+
+enum VisitorStatus {
+  GOING
+  WAITING
+  DONE
+}
+
+
+enum RecrutementStatus {
+  OPEN
+  CLOSE
 }
 
 enum AttendanceStatus {

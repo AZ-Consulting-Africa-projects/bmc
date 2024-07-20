@@ -21,6 +21,7 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { searchFunction } from "@/lib/utils";
 import SearchInput from "@/app/(pages)/components/SearchInput";
+import ExportDialog from "@/app/(pages)/components/ExportDialog";
 
 
 
@@ -28,7 +29,7 @@ export default function Departement() {
     const [data, setData] = useState<DepartementModel[]>([]);
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<DepartementModel[]>([]);
-    
+
     const router = useRouter();
 
 
@@ -90,7 +91,7 @@ export default function Departement() {
                                                     text: "Votre supression a été effectuer.",
                                                     icon: "success"
                                                 });
-                                                
+
                                                 setData(data.filter((item) => item.id !== items.id));
                                                 setResults(results.filter((item) => item.id !== items.id));
                                                 router.refresh();
@@ -127,30 +128,38 @@ export default function Departement() {
 
             {/** searche input */}
             <SearchInput query={query} setQuery={setQuery} data={data} element="departementName" setResults={setResults} palceholder={"Trouver un departement"} />
-            
+
 
 
 
             {/*table*/}
-            <Table>
-                <TableCaption>Liste des départements.</TableCaption>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className="">Nom du departement</TableHead>
-                        <TableHead className="text-right">Description</TableHead>
-                        <TableHead className="text-right">Action</TableHead>
-                    </TableRow>
-                </TableHeader>
+            <div className="flex flex-col space-y-3 ">
+                <div className="w-auto">
+                    <ExportDialog data={data} />
+                </div>
+                
 
-                <TableBody>
-                    {
-                        query == '' ? tableConstruction(data) : tableConstruction(results)
-                    }
-                </TableBody>
-                <TableFooter>
+                <Table>
+                    <TableCaption>Liste des départements.</TableCaption>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="">Nom du departement</TableHead>
+                            <TableHead className="text-right">Description</TableHead>
+                            <TableHead className="text-right">Action</TableHead>
+                        </TableRow>
+                    </TableHeader>
 
-                </TableFooter>
-            </Table>
+                    <TableBody>
+                        {
+                            query == '' ? tableConstruction(data) : tableConstruction(results)
+                        }
+                    </TableBody>
+                    <TableFooter>
+
+                    </TableFooter>
+                </Table>
+            </div>
+
 
         </main>
     );

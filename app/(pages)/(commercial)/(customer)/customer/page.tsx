@@ -32,7 +32,7 @@ export default function Customer() {
     const router = useRouter();
 
     useEffect(() => {
-        Api.read('/api/poste').then((value) => {
+        Api.read('/api/customer').then((value) => {
             setData(value)
         })
     }, []);

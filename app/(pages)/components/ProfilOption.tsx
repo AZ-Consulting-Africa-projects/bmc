@@ -34,7 +34,14 @@ const ProfilOption = () => {
                 <DropdownMenuLabel className="text-center">Mon compte</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="flex justify-center">
-                    <Button size="sm" type="button" variant={"outline"} className="w-full">
+                    <Button 
+                    onClick={() => {
+                        router.push('/profil');
+                    }}
+                    size="sm" 
+                    type="button" 
+                    variant={"outline"} 
+                    className="w-full">
                         Profile
                     </Button>
                 </DropdownMenuItem>

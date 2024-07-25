@@ -149,7 +149,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                     {/** amount */}
                     <div className=" flex flex-col">
                         <label className={formik.touched.amount && formik.errors.amount ? "text-red-600 " : "text-gray-600 "}>
-                            {formik.touched.amount && formik.errors.amount ? formik.errors.amount : "Date de début"}
+                            {formik.touched.amount && formik.errors.amount ? formik.errors.amount : "Montant"}
 
                             <span className="text-red-600">*</span>
                         </label>
@@ -164,7 +164,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                     {/** due_date */}
                     <div className=" flex flex-col">
                         <label className={formik.touched.due_date && formik.errors.due_date ? "text-red-600 " : "text-gray-600 "}>
-                            {formik.touched.due_date && formik.errors.due_date ? formik.errors.due_date : "Date de début"}
+                            {formik.touched.due_date && formik.errors.due_date ? formik.errors.due_date : "Date de fin"}
 
                             <span className="text-red-600">*</span>
                         </label>
@@ -208,7 +208,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                     {/** description */}
                     <div className=" flex flex-col">
                         <label className={formik.touched.description && formik.errors.description ? "text-red-600 " : "text-gray-600 "}>
-                            {formik.touched.description && formik.errors.description ? formik.errors.description : "Date de début"}
+                            {formik.touched.description && formik.errors.description ? formik.errors.description : "Description"}
 
                             <span className="text-red-600">*</span>
                         </label>

@@ -35,6 +35,7 @@ export default function Transaction() {
     useEffect(() => {
         Api.read('/api/budget').then((value) => {
             setData(value)
+            console.log(value)
         })
     }, []);
 
@@ -43,7 +44,7 @@ export default function Transaction() {
     const tableConstruction = (data: any[]) => {
         return data.map((items) => (
             <TableRow key={items.id}>
-                <TableCell className="font-medium">{items.departement.departementName}</TableCell>
+                <TableCell className="font-medium">{items.deparetement.departementName}</TableCell>
                 <TableCell className="font-medium">{items.budget_allocated}</TableCell>
                 <TableCell className="font-medium">{items.budget_spent}</TableCell>
                 <TableCell className="font-medium">{items.budget_remaining}</TableCell>
@@ -141,6 +142,10 @@ export default function Transaction() {
             <SearchInput query={query} setQuery={setQuery} data={data} element="budget_allocated" setResults={setResults} palceholder={"Recherche par budget aloué "} />
 
              {/*table*/}
+             <div className="flex flex-col space-y-3 ">
+                 <div className="w-auto">
+                    <ExportDialog data={data} />
+                </div>
              <Table>
                 <TableCaption>Liste des budgets.</TableCaption>
                 <TableHeader>
@@ -163,6 +168,7 @@ export default function Transaction() {
 
                 </TableFooter>
             </Table>
+            </div>
         </main >
     );
 }

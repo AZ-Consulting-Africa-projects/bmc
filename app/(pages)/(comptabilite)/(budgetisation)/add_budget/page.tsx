@@ -67,7 +67,7 @@ export default function AddDepartement() {
                 toast({
                     title: "Budget ajouté avec succès",
                 });
-                resetForm();
+                formik.resetForm();
                 setIsLoading(false);
             } else {
                 console.log(resp);
@@ -196,7 +196,7 @@ export default function AddDepartement() {
 
                         <Button danger htmlType="button"
                             onClick={() => {
-                                resetForm();
+                                formik.resetForm();
                             }}
                         >
                             Annuler

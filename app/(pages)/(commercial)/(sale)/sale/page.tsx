@@ -23,6 +23,7 @@ import { searchFunction } from "@/lib/utils";
 import SearchInput from "@/app/(pages)/components/SearchInput";
 import { PostModel } from "@/models/PosteModel";
 import { SaleModel } from "@/models/modelCommercial/SaleModel";
+import ExportDialog from "@/app/(pages)/components/ExportDialog";
 
 
 export default function Customer() {
@@ -32,7 +33,7 @@ export default function Customer() {
     const router = useRouter();
 
     useEffect(() => {
-        Api.read('/api/poste').then((value) => {
+        Api.read('/api/sale').then((value) => {
             setData(value)
         })
     }, []);
@@ -128,6 +129,10 @@ export default function Customer() {
             <SearchInput query={query} setQuery={setQuery} data={data} element="name" setResults={setResults} palceholder={"Recherche par nom de l'opportunité de vente"} />
 
             {/*table*/}
+            <div className="flex flex-col space-y-3 ">
+                 <div className="w-auto">
+                    <ExportDialog data={data} />
+                </div>
             <Table>
                 <TableCaption>Liste des opportunité de vente.</TableCaption>
                 <TableHeader>
@@ -150,6 +155,7 @@ export default function Customer() {
 
                 </TableFooter>
             </Table>
+            </div>
         </main>
     );
 }

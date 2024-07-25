@@ -58,20 +58,25 @@ export default function Dashboard() {
     return (
         <main className="flex flex-col space-y-10">
             <h1 className="text-2xl font-bold ">Vue d'ensemble </h1>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-4 xl-grid-cols-4 '>
+
+                <DasshCard1 image={'/image/comptable.png'} title={'Nombre d\'employé '} value={10}  />
+                <DasshCard1 image={'/image/opportunite.png'} title={'Nombre de client'} value={10}  />
+                <DasshCard1 image={'/image/opportunite.png'} title={'Nouvelle opportunités'} value={10}  />
+                <DasshCard1 image={'/image/commerce-electronique.png'} title={'Ventes totales'} value={10}  />
+                <DasshCard1 image={'/image/depenser-de-largent.png'} title={'Dépenses totales'} value={10}  />
+                <DasshCard1 image={'/image/depenser-de-largent.png'} title={'Postulants pour un poste'} value={10}  />
+
+
+            </div>
+
             <div className="flex md:space-x-20 space-y-20  md:flex-row flex-col">
-                <div className='flex flex-col gap-2 '>
-                    <div className='flex   gap-2 '>
-                        <DasshCard1 image={'/image/comptable.png'} title={'Nombre d\'employé présent'} value={10} color={'bg-purple-200'} />
-                        <DasshCard1 image={'/image/opportunite.png'} title={'Nouvelle opportunités'} value={10} color={'bg-sky-200'} />
-                    </div>
+                <div className='grid grid-cols-1 gap-4 md:grid-cols-3 xl-grid-cols-4 '>
 
 
-                    <div className='flex  gap-2 '>
-                        <DasshCard1 image={'/image/commerce-electronique.png'} title={'Ventes totales'} value={10} color={'bg-lime-200'} />
-                        <DasshCard1 image={'/image/depenser-de-largent.png'} title={'Dépenses totales'} value={10} color={'bg-yellow-200'} />
-                    </div>
 
-                  {/**  <div className='flex  gap-2 items-center mt-2'>
+                    {/*  
+                  <div className='flex  gap-2 items-center mt-2'>
                         {/** pie 
                         <PieChart
                             series={[

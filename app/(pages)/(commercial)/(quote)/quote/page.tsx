@@ -23,6 +23,7 @@ import { searchFunction } from "@/lib/utils";
 import SearchInput from "@/app/(pages)/components/SearchInput";
 import { PostModel } from "@/models/PosteModel";
 import { QuoteModel } from "@/models/modelCommercial/QuoteModel";
+import ExportDialog from "@/app/(pages)/components/ExportDialog";
 
 
 export default function Quote() {
@@ -127,6 +128,10 @@ export default function Quote() {
             <SearchInput query={query} setQuery={setQuery} data={data}  element="type" setResults={setResults} palceholder={"Recherche par type"} />
             
             {/*table*/}
+             <div className="flex flex-col space-y-3 ">
+                 <div className="w-auto">
+                    <ExportDialog data={data} />
+                </div>
             <Table>
                 <TableCaption>Liste des Quotes.</TableCaption>
                 <TableHeader>
@@ -148,6 +153,7 @@ export default function Quote() {
 
                 </TableFooter>
             </Table>
+            </div>
         </main>
     );
 }

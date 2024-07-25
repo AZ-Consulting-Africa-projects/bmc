@@ -184,6 +184,10 @@ export default function Transaction() {
 
 
             {/*table*/}
+            <div className="flex flex-col space-y-3 ">
+                 <div className="w-auto">
+                    <ExportDialog data={data} />
+                </div>
             <Table>
                 <TableCaption>Liste des postes.</TableCaption>
                 <TableHeader>
@@ -207,6 +211,7 @@ export default function Transaction() {
 
                 </TableFooter>
             </Table>
+            </div>
         </main >
     );
 }

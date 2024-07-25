@@ -184,8 +184,6 @@ export default function Attendance() {
       {/** searche input */}
       <div className="grid grid-cols-1 md:grid-cols-2  xl:grid-cols-3 gap-4">
         <SearchInput query={query} setQuery={setQuery} data={data} element="date" setResults={setResults} palceholder={"Trouver une presence par date"} />
-        <SearchInput query={query} setQuery={setQuery} data={data} element="inTime" setResults={setResults} palceholder={"Trouver une presence par heure d\'arrivé"} />
-        <SearchInput query={query} setQuery={setQuery} data={data} element="outTime" setResults={setResults} palceholder={"Trouver une presence par heure de départ"} />
 
       </div>
 

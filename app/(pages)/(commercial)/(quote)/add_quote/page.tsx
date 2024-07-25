@@ -101,11 +101,11 @@ export default function AddQuote() {
                             className=" md:w-[350px] "
                             options={[
                                 {
-                                    value: "devis",
+                                    value: "DEVIS",
                                     label: "Devis",
                                 },
                                 {
-                                    value: "facture",
+                                    value: "FACTURE",
                                     label: "Facture",
                                 }
                             ]}
@@ -175,14 +175,7 @@ export default function AddQuote() {
                             }}
                             className=" md:w-[350px] "
                             options={[
-                                {
-                                    value: "paid",
-                                    label: "Paid",
-                                },
-                                {
-                                    value: "unpaid",
-                                    label: "Unpaid",
-                                },
+                               
                                 {
                                     value: "ACCEPT",
                                     label: "accepter",

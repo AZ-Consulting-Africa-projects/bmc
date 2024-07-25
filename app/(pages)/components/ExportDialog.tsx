@@ -39,7 +39,7 @@ const ExportDialog = ({ data,
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-4">
-                        <ExportPDFButton data={data}/>
+                       {/**  <ExportPDFButton data={data}/>*/}
 
                         <ExportExcelButton data={data}/>
 

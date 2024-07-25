@@ -138,6 +138,10 @@ export default function Transaction() {
             <SearchInput query={query} setQuery={setQuery} data={data} element="departementName" setResults={setResults} palceholder={"Trouver une transaction par date"} />
 
              {/*table*/}
+             <div className="flex flex-col space-y-3 ">
+                 <div className="w-auto">
+                    <ExportDialog data={data} />
+                </div>
              <Table>
                 <TableCaption>Liste des factures.</TableCaption>
                 <TableHeader>
@@ -160,6 +164,7 @@ export default function Transaction() {
 
                 </TableFooter>
             </Table>
+            </div>
         </main >
     );
 }

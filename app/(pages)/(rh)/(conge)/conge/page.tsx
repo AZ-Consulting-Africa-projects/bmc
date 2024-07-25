@@ -161,7 +161,12 @@ export default function Formation() {
             <SearchInput query={query} setQuery={setQuery} data={data} element="leave_type" setResults={setResults} palceholder={"Recherche par type de congé"} />
 
             {/*table*/}
-            <Table>
+            <div className="flex flex-col space-y-3 ">
+                 <div className="w-auto">
+                    <ExportDialog data={data} />
+                </div>
+
+                 <Table>
                 <TableCaption>Liste des congé.</TableCaption>
                 <TableHeader>
                     <TableRow>
@@ -184,6 +189,9 @@ export default function Formation() {
 
                 </TableFooter>
             </Table>
+            </div>
+               
+           
         </main>
     );
 }

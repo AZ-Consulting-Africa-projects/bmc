@@ -44,15 +44,15 @@ export default function AddTransaction() {
         }),
         onSubmit: async (values) => {
             setIsLoading(true);
-            console.log(values);
             const transactionModel = new TransactionModel(values.date, +values.amount, values.type, values.category, values.status, values.description);
-            const resp = await Api.create('/api/poste', transactionModel);
+            const resp = await Api.create('/api/transaction', transactionModel);
 
             if (resp.ok) {
                 toast({
                     title: " ajout effectué avec succès",
                 });
                 resetForm();
+                formik.resetForm();
                 
                 setIsLoading(false);
             } else {
@@ -203,7 +203,7 @@ export default function AddTransaction() {
 
                         <Button danger htmlType="button"
                             onClick={() => {
-                                resetForm();
+                                formik.resetForm();
                             }}
                         >
                             Annuler

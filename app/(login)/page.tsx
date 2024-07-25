@@ -26,8 +26,7 @@ export default function Home() {
   const [image, setImage] = useState("");
   const isConfig = useSelector((state: RootState) => state.config.isConfig)
   const ui = useSelector((state: RootState) => state.auth.value.isAuth);
-  console.log(ui);
- console.log(isConfig);
+  
   useEffect(() => {
     console.log(isConfig);
     if (isConfig) {

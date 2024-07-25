@@ -74,7 +74,7 @@ const SidbarContent = () => {
                                      <Link className={pathname == "/attendance" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/attendance">Presences</Link>
                                     <Link className={pathname == "/recrutement" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/recrutement">Recrutements</Link>
                                     <Link className={pathname == "/conge" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/conge">Congé</Link>
-                                    <Link className={pathname == "/formation" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/formation">Formations</Link>
+                                 {/**    <Link className={pathname == "/formation" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/formation">Formations</Link>*/}
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
@@ -106,7 +106,7 @@ const SidbarContent = () => {
                                     <Link className={pathname == "/customer" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/customer">Clients</Link>
                                     <Link className={pathname == "/sale" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/sale">Opportunité de vente</Link>
                                     <Link className={pathname == "/quote" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/quote">devis/facture</Link>
-                                    <Link className={pathname == "/sale_report" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/sale_report">Rapports de Ventes</Link>
+                                  {/**   <Link className={pathname == "/sale_report" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/sale_report">Rapports de Ventes</Link> */}
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
@@ -114,7 +114,7 @@ const SidbarContent = () => {
 
 
                     {/** comptabilité */}
-                    <div className="flex space-x-3 hover:font-bold hover:text-blue-600 hover:scale-105 " >
+                    <div className="flex space-x-3  " >
                         <div className="mt-3">
                             <BadgeDollarSign className={pathname == "/transaction" || pathname == "/invoice" || pathname == "/budget" ? "text-blue-600 flex self-start" : "flex self-start hover:font-bold hover:text-blue-600 hover:scale-105"} />
                         </div>
@@ -127,7 +127,7 @@ const SidbarContent = () => {
                                     <Link className={pathname == "/transaction" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/transaction">Transactions Financières</Link>
                                     <Link className={pathname == "/invoice" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/invoice">Factures</Link>
                                     <Link className={pathname == "/budget" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/budget">Budgétisation</Link>
-                                    <Link className={pathname == "/" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="/">Rapports Financiers</Link>
+                                  {/**   <Link className={pathname == "#" ? "font-bold text-blue-600" : "hover:font-bold hover:text-blue-600"} href="#">Rapports Financiers</Link>*/}
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>

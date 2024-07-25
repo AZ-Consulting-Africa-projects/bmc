@@ -23,6 +23,7 @@ import { searchFunction } from "@/lib/utils";
 import SearchInput from "@/app/(pages)/components/SearchInput";
 import { CustomerModel } from "@/models/modelCommercial/CustomerModel";
 import { Select } from "antd";
+import ExportDialog from "@/app/(pages)/components/ExportDialog";
 
 
 export default function Customer() {
@@ -179,7 +180,12 @@ export default function Customer() {
             <SearchInput query={query} setQuery={setQuery} data={data} element="name" setResults={setResults} palceholder={"Recherche par le nom du client"} />
 
             {/*table*/}
-            <Table>
+             <div className="flex flex-col space-y-3 ">
+                <div className="w-auto">
+                    <ExportDialog data={data} />
+                </div>
+
+                 <Table>
                 <TableCaption>Liste des client.</TableCaption>
                 <TableHeader>
                     <TableRow>
@@ -201,6 +207,9 @@ export default function Customer() {
 
                 </TableFooter>
             </Table>
+             </div>
+                 
+           
         </main>
     );
 }

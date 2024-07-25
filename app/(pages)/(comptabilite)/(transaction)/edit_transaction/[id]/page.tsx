@@ -71,7 +71,7 @@ export default function EditTransaction({params}: {params: {id: string}}) {
         onSubmit: async (values) => {
             setIsLoading(true);
             const transactionModel = new TransactionModel(values.date, +values.amount, values.type, values.category, values.status, values.description, +params.id);
-            const resp = await Api.update(`/api/poste/${params.id}`, transactionModel);
+            const resp = await Api.update(`/api/transaction/${params.id}`, transactionModel);
 
             if (resp.ok) {
                 toast({

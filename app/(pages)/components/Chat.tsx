@@ -23,15 +23,19 @@ const Chat = () => {
             <FloatButton
                 shape="circle"
                 type="primary"
-                onClick={showDrawer}
+                onClick={() => {
+                    const url = `https://wa.me/${90214140}?text=${encodeURIComponent("")}`;
+                    window.open(url, '_blank');
+                    //showDrawer
+                }}
                 style={{ right: 94 }}
                 className='flex items-center justify-center'
                 icon={
-                    <Badge size="small" count={0} showZero  color="#faad14" >
+                    <Badge size="small" count={0} showZero color="#faad14" >
                         <MessageCircleMore className=" text-white" />
                     </Badge>
-                
-            }
+
+                }
             />
 
             <Drawer title="Service client" onClose={onClose} open={open}>
